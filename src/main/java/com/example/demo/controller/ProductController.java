@@ -29,7 +29,19 @@ public class ProductController {
 	public String write() {
 		return "product/productadd"; // "product/productadd.jsp"를 반환하도록 설정
 	}
-
+	
+	@GetMapping("/product/detail")
+	public String detail(@RequestParam int id, Model model) {
+	    boolean result = productService.searchProduct(id);
+	    if (!result) {
+	        model.addAttribute("message", "제품 추가 중 오류가 발생하였습니다.");
+	        return "error";
+	    } else {
+	        Product product = productService.ProductDetail(id);
+	        model.addAttribute("product", product);
+	        return "product/productdetail";
+	    }
+	}
 	@GetMapping("/product/list")
 	public String list(Model model) {
 		List<Product> products = productService.getProductlist();
@@ -38,8 +50,9 @@ public class ProductController {
 	}
 
 	@GetMapping("/product/modify")
-	public String modify() {
-		return "product/productadd"; // "product/productadd.jsp"를 반환하도록 설정
+	public String modify(Model model,@RequestParam int id) {
+		model.addAttribute("productId", id);
+		return "product/productmodify"; // "product/productadd.jsp"를 반환하도록 설정
 	}
 
 	@PostMapping("/product/ADD")
@@ -52,7 +65,7 @@ public class ProductController {
 
 		productService.addProduct(product);
 		model.addAttribute("product", product);
-		return "product-added";
+		return "product/main";
 	}
 
 	@PostMapping("/product/Detail")
@@ -64,7 +77,7 @@ public class ProductController {
 		} else {
 			Product product = productService.ProductDetail(id);
 			model.addAttribute("product", product);
-			return "product-added";
+			return "product/productdetail";
 		}
 	}
 
@@ -83,20 +96,20 @@ public class ProductController {
 			Product product = new Product(name, price, description, count, category, maker, color, size);
 			productService.modifyProduct(productId, product);
 			model.addAttribute("product", product);
-			return "product-modified";
+			return "redirect:/product/detail?id=" + productId;
 		}
 	}
 
 	@PostMapping("/product/Delete")
-	public String deleteProduct(Model model, @RequestParam int productId) {
-		boolean result = productService.searchProduct(productId);
+	public String deleteProduct(Model model, @RequestParam int id) {
+		boolean result = productService.searchProduct(id);
 		if (!result) {
 			model.addAttribute("message", "제품 삭제 중 오류가 발생하였습니다.");
 			return "error";
 		} else {
-			productService.deleteProduct(productId);
-			model.addAttribute("productId", productId);
-			return "product-deleted";
+			productService.deleteProduct(id);
+			model.addAttribute("productId", id);
+			return "redirect:/product/list";
 		}
 	}
 }

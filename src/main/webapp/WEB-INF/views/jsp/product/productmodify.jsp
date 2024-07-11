@@ -94,6 +94,8 @@ $(document).ready(function() {
 </head>
 <body>
 <form id="addForm" action="/product/Modify" method="post">
+	<input type="hidden" id="productId" name="productId" value="${productId}">
+
     <label for="name">상품명:</label><br>
     <input type="text" id="name" name="name" placeholder="상품명을 입력해주세요"><br>
     <div id="nameError" class="error-message"></div><br>

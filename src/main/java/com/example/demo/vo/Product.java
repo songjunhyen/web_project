@@ -11,7 +11,6 @@ public class Product {
   private String name;
   private int price;
   private String description; // 설명
-  //private String imageUrl;
   private int count; // 재고량
   private String category; // 카테고리 
   private String maker; // 제조사
@@ -21,7 +20,7 @@ public class Product {
   private LocalDate regDate = LocalDate.now(); // 등록일
   private int viewcount = 0;
 
-  public Product(String name, int price, String description, //String imageUrl,
+  public Product(String name, int price, String description,
                    int count, String category , String maker, String color, String size) {
     this.name = name;
     this.price = price;

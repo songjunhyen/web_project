@@ -40,11 +40,16 @@
 			</tbody>
 		</table>
 	</div>
-<div class="mt-3 text-sm">
-    <button class="btn btn-active btn-sm" onclick="history.back();">뒤로가기</button>
-    <a class="btn btn-active btn-sm" href="Modify?id=${product.id}">수정</a>
-    <a class="btn btn-active btn-sm" href="Delete?id=${product.id}"
-        onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</a>
-</div>
+	<div class="mt-3 text-sm">
+		<button class="btn btn-active btn-sm" onclick="history.back();">뒤로가기</button>
+		<form action="/product/modify" method="get">
+			<input type="hidden" name="id" value="${product.id}">
+			<button type="submit">수정</button>
+		</form>
+		<form action="/product/Delete" method="post">
+			<input type="hidden" name="id" value="${product.id}">
+			<button onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</button>
+		</form>
+	</div>
 </body>
 </html>

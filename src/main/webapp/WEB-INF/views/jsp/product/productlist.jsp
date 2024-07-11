@@ -28,7 +28,12 @@
 					<tr>
 						<td>${products.id}</td>
 						<td>${products.category}</td>
-						<td><a href="product/Detail?id=${products.id}">${products.name}</a></td>
+						<td>
+							<form action="/product/Detail" method="post">
+								<input type="hidden" name="id" value="${products.id}">
+								<button type="submit">${products.name}</button>
+							</form>
+						</td>
 						<td>${products.price}</td>
 						<td>${products.viewcount}</td>
 						<td>${products.regDate}</td>
@@ -36,6 +41,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		<button class="btn btn-active btn-sm" onclick="location.href='/test/product/Main'">메인으로</button>
 	</div>
 </body>
 </html>
