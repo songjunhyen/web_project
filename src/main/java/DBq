@@ -17,3 +17,14 @@ CREATE TABLE product (
       regDate DATETIME NOT NULL,
       viewcount INT UNSIGNED NOT NULL DEFAULT 0
 );
+
+CREATE TABLE `user` ( -- admin+member class로 구분
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    userid VARCHAR(30) NOT NULL UNIQUE,
+    userpw VARCHAR(60) NOT NULL,
+    `name` VARCHAR(60) NOT NULL,
+    email VARCHAR(60) NOT NULL,
+    class INT NOT NULL,
+    address VARCHAR(60)
+);
