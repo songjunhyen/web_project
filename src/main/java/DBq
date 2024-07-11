@@ -1,0 +1,19 @@
+DROP DATABASE IF EXISTS jsp_sb_project;
+CREATE DATABASE jsp_sb_project;
+USE jsp_sb_project;
+
+CREATE TABLE product (
+      id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      `name` VARCHAR(255) NOT NULL,
+      price INT NOT NULL,
+      `description` VARCHAR(255) NOT NULL,
+      -- imageUrl VARCHAR(255) NOT NULL,
+      `count` INT NOT NULL,
+      category VARCHAR(255) NOT NULL,
+      maker VARCHAR(255) NOT NULL,
+      color VARCHAR(255) NOT NULL,
+      size VARCHAR(255) NOT NULL,
+      additionalOptions VARCHAR(255) NOT NULL DEFAULT '없음',
+      regDate DATETIME NOT NULL,
+      viewcount INT UNSIGNED NOT NULL DEFAULT 0
+);
