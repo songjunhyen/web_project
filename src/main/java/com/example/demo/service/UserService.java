@@ -13,8 +13,8 @@ public class UserService {
 		this.userDao = userDao;
 	}
 
-	public void signup(Member newMember) {
-		userDao.signup(newMember);
+	public void signup(Member member) {
+		userDao.signup(member);
 	}
 
 	public void modify(int id, String pw, String name, String email, String address) {
@@ -28,10 +28,10 @@ public class UserService {
 	public boolean checking(String userid, String pw) {
 		boolean isin = true;
 		// id로 체크
-		if (!userDao.checkid(userid)) {
+		if (userDao.checkid(userid)== 0) {
 			isin = false;
 		} else {
-			if (!userDao.checkpw(userid,pw)) {
+			if (userDao.checkpw(userid,pw)==0) {
 				isin = false;
 			}
 		}

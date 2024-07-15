@@ -2,13 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-로그인 버튼
-회원가입 버튼
 
+<a href="/user/Login">로그인 버튼</a>
+
+<a href="/user/Signup">회원가입 버튼</a>
  
 </body>
 </html>

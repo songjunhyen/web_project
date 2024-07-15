@@ -28,3 +28,12 @@ CREATE TABLE `user` ( -- admin+member class로 구분
     class INT NOT NULL,
     address VARCHAR(60)
 );
+
+CREATE TABLE review(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    productid INT UNSIGNED NOT NULL,
+    writer INT UNSIGNED NOT NULL   , 
+    regDate DATETIME NOT NULL,
+    reviewtext TEXT NOT NULL,
+    star DOUBLE UNSIGNED NOT NULL,
+);

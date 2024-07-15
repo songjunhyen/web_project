@@ -1,6 +1,7 @@
 package com.example.demo.vo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -9,7 +10,7 @@ public class Review {
 	  private int id; // 리뷰 id
 	  private int productId; // 상품 id
 	  private String writer; // 작성자
-	  private LocalDate regDate; // 작성일
+	  private LocalDateTime regDate; // 작성일
 	  private String reviewText;
 	  private double star; // 별점 소수점 1자리수까지 1~5
 
@@ -17,7 +18,7 @@ public class Review {
 	    this.id = id;
 	    this.productId = productId;
 	    this.writer = writer;
-	    this.regDate = regDate;
+	    this.regDate = LocalDateTime.now();
 	    this.reviewText = reviewText;
 	    this.star = star;   
 	  }

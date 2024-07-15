@@ -60,6 +60,7 @@ public class UserController {
 		    }else {
 		    	int memberid = userService.getid(userid,pw); //서비스에 로그인 메서드 추가하고 로그인하면 Member타입 반환하도록 변경
 		    	session.setAttribute("id", memberid);
+		    	session.setAttribute("userid", userid);
 		    	session.setAttribute("viplevel", 0); // 반환된 Member에 get 써서 그걸 저장하자.
 		    	session.setAttribute("class", 0); // 반환된 Member에 get 써서 그걸 저장하자.. 이걸로 상품 수정 삭제
 		    }		    

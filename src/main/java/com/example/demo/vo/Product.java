@@ -1,7 +1,6 @@
 package com.example.demo.vo;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import lombok.Data;
 
@@ -16,20 +15,24 @@ public class Product {
   private String maker; // 제조사
   private String color;
   private String size;
-  private List<String> additionalOptions; 
-  private LocalDate regDate = LocalDate.now(); // 등록일
-  private int viewcount = 0;
+  private String additionalOptions; 
+  private LocalDate regDate; // 등록일
+  private int viewcount;
 
-  public Product(String name, int price, String description,
-                   int count, String category , String maker, String color, String size) {
-    this.name = name;
-    this.price = price;
-    this.description = description;
-    //this.imageUrl = imageUrl;
-    this.count = count;
-    this.category = category;
-    this.maker = maker;
-    this.color = color;
-    this.size = size;
-  }
+	public Product(int id, String name, int price, String description, int count, String category, String maker, String color,
+			String size, String additionalOptions) {
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.description = description;
+//this.imageUrl = imageUrl;
+		this.count = count;
+		this.category = category;
+		this.maker = maker;
+		this.color = color;
+		this.size = size;
+		this.additionalOptions = additionalOptions;
+		this.regDate = LocalDate.now();
+		this.viewcount = 0;
+	}
 }

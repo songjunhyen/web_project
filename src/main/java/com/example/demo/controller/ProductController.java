@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -42,10 +43,14 @@ public class ProductController {
 	        return "product/productdetail";
 	    }
 	}
+	
 	@GetMapping("/product/list")
 	public String list(Model model) {
 		List<Product> products = productService.getProductlist();
+		Collections.reverse(products);
+	    
 		model.addAttribute("products", products);
+		
 		return "product/productlist"; // "product/productadd.jsp"를 반환하도록 설정
 	}
 
@@ -59,9 +64,10 @@ public class ProductController {
 	public String addProduct(Model model, @RequestParam String name, @RequestParam int price,
 			@RequestParam String description, @RequestParam int count, @RequestParam String category,
 			@RequestParam String maker, @RequestParam String color, @RequestParam String size,
-			@RequestParam List<String> options) {
+			@RequestParam String options) {
 
-		Product product = new Product(name, price, description, count, category, maker, color, size);
+		Product product = new Product(0, name, price, description, count, category, maker, color, size, "");
+		product.setAdditionalOptions(options);
 
 		productService.addProduct(product);
 		model.addAttribute("product", product);
@@ -93,7 +99,7 @@ public class ProductController {
 			model.addAttribute("message", "제품 수정 중 오류가 발생하였습니다.");
 			return "error";
 		} else {
-			Product product = new Product(name, price, description, count, category, maker, color, size);
+			Product product = new Product(0, name, price, description, count, category, maker, color, size, "");
 			productService.modifyProduct(productId, product);
 			model.addAttribute("product", product);
 			return "redirect:/product/detail?id=" + productId;
