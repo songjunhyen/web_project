@@ -18,16 +18,16 @@ public interface AdminDao {
 
     @Update("""
             UPDATE `admin`
-            SET adminpw = #{pw}, `name` = #{name}, email = #{email}
-            WHERE adminid = #{adminid}
+            SET `name` = #{name}, email = #{email}
+            WHERE id = #{id}
             """)
-    void modify(String adminid, String pw, String name, String email);
+    void modify(int id, String name, String email);
 
     @Delete("""
             DELETE FROM `admin`
-            WHERE id = #{id}
+            WHERE id = #{id} AND email = #{email}
             """)
-    void signout(int id);
+    void signout(int id, int email);
 
     @Select("""
             SELECT EXISTS(SELECT 1 FROM `admin` WHERE adminid = #{userid})

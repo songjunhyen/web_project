@@ -1,16 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>°ü¸®ÀÚ Ãß°¡</title>
+<meta charset="UTF-8">
+<title>ê´€ë¦¬ìž ì¶”ê°€</title>
 </head>
 <body>
-	ºÎ¼­(class)¼±ÅÃÇØ¼­
-	»ç¿ëÇÒ emailµî·Ï
-	»ý¼º ¹öÆ°
-»ý¼º ¹öÆ° ´­·¯¼­ ¸¸µé¾îÁö¸é ºñµ¿±âÀûÀ¸·Î ¸¸µé¾îÁø id, pw µî Á¤º¸ Ãâ·Â
+	ë¶€ì„œ(class)ì„ íƒí•´ì„œ
+	ì‚¬ìš©í•  emailë“±ë¡
+	ìƒì„± ë²„íŠ¼
+ìƒì„± ë²„íŠ¼ ëˆŒëŸ¬ì„œ ë§Œë“¤ì–´ì§€ë©´ ë¹„ë™ê¸°ì ìœ¼ë¡œ ë§Œë“¤ì–´ì§„ id, pw ë“± ì •ë³´ ì¶œë ¥
 
 </body>
 </html>

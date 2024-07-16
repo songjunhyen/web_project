@@ -99,12 +99,14 @@
 		<div>
 			<form action="/Cart/add" method="post">
 				<input type="hidden" name="productid" value="${product.id}" /> 
+				<input type="hidden" name="name" value="${product.name}" />
 				<input type="hidden" name="color" value="${product.color}" /> 
 				<input type="hidden" name="size" value="${product.size}" />
-				<input type="number" name="count" step ="1" min="1" max="${product.count}" placeholder="수량 선택"/>
+				<input type="hidden" name="price" value="${product.price}" />
+		    	<input type="number" name="count" step="1" min="1" max="${product.count}" value="1" placeholder="수량 선택"/>
 				<%-- 사이즈 수량 옵션 선택할 수 있도록 변경 예정 --%>
 				<button type="submit">카트에 담기</button>
-			</form>
+			</form>			
 		</div>
 		<div class="mt-3">
 			<h3>

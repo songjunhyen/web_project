@@ -42,10 +42,12 @@ CREATE TABLE cart (
     id INT AUTO_INCREMENT PRIMARY KEY,    
     userid INT NOT NULL,
     productid INT NOT NULL,
-    priductname VARCHAR(255) NOT NULL,
+    productname VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL,
     size VARCHAR(255) NOT NULL,
-    COUNT INT NOT NULL
+    COUNT INT NOT NULL,
+    price INT NOT NULL,
+    priceall INT AS (PRICE * COUNT) STORED
     -- UNIQUE KEY unique_product_user (productid, userid) 
     -- productid와 userid 조합이 유일해야 한다는 제약 조건
 );
@@ -53,9 +55,44 @@ CREATE TABLE cart (
 CREATE TABLE `admin` ( 
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
-    adminid VARCHAR(30) NOT NULL UNIQUE,
+    adminid VARCHAR(30) NOT NULL,
     adminpw VARCHAR(60) NOT NULL UNIQUE,
     `name` VARCHAR(60) NOT NULL,
     email VARCHAR(60) NOT NULL UNIQUE,
     adminclass INT NOT NULL  
 );
+
+-- `product` 테이블에 샘플 데이터 삽입
+INSERT INTO product (`name`, price, `description`, `count`, category, maker, color, size, regDate, viewcount)
+VALUES 
+    ('제품 A', 10000, '제품 A의 설명', 50, '카테고리 A', '제조사 X', '빨강', '대형', NOW(), 0),
+    ('제품 B', 20000, '제품 B의 설명', 30, '카테고리 B', '제조사 Y', '파랑', '중형', NOW(), 0),
+    ('제품 C', 15000, '제품 C의 설명', 20, '카테고리 A', '제조사 Z', '초록', '소형', NOW(), 0);
+
+-- `user` 테이블에 샘플 데이터 삽입
+INSERT INTO `user` (regDate, userid, userpw, `name`, email, class, address)
+VALUES 
+    (NOW(), 'user1', 'password1', '사용자 1', 'user1@example.com', 1, '주소 1'),
+    (NOW(), 'user2', 'password2', '사용자 2', 'user2@example.com', 1, '주소 2'),
+    (NOW(), 'user3', 'password3', '사용자 3', 'user3@example.com', 2, '주소 3');
+
+-- `review` 테이블에 샘플 데이터 삽입
+INSERT INTO review (productid, writer, regDate, reviewtext, star)
+VALUES 
+    (1, 'user1', NOW(), '제품 A 리뷰', 4.5),
+    (2, 'user2', NOW(), '제품 B 리뷰', 3.8),
+    (1, 'user3', NOW(), '제품 A 관련 추가 리뷰', 4.2);
+
+-- `cart` 테이블에 샘플 데이터 삽입
+INSERT INTO cart (userid, productid, productname, color, size, COUNT, price, priceall)
+VALUES 
+    (1, 1, '제품 A', '빨강', '대형', 2, 10000, 20000),
+    (2, 2, '제품 B', '파랑', '중형', 1, 20000, 20000),
+    (1, 3, '제품 C', '초록', '소형', 3, 15000, 45000);
+
+-- `admin` 테이블에 샘플 데이터 삽입
+INSERT INTO `admin` (regDate, adminid, adminpw, `name`, email, adminclass)
+VALUES 
+    (NOW(), 'admin1', 'adminpw1', '관리자 1', 'admin1@example.com', 1),
+    (NOW(), 'admin2', 'adminpw2', '관리자 2', 'admin2@example.com', 2);
+

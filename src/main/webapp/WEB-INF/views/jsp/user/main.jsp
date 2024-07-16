@@ -8,8 +8,9 @@
 <body>
 
 <a href="/user/Login">로그인 버튼</a>
-
 <a href="/user/Signup">회원가입 버튼</a>
+
+<a href="/admin/Login">관리자용 폐이지로 </a>
  
 </body>
 </html>

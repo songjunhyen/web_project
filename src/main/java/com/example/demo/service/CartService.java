@@ -19,8 +19,8 @@ public class CartService {
 		return cartDao.GetCartList(userid);
 	}
 
-	public void AddCartList(int userid, int productid, String color, String size, int count) {
-		cartDao.AddCartList(userid, productid, color, size, count);
+	public void AddCartList(int userid, int productid, String name, String color, String size, int count, int price) {
+		cartDao.AddCartList(userid, productid, name, color, size, count, price);
 	}
 
 	public void ModifyCartList(int userid, int productid, String color, String size, int count) {

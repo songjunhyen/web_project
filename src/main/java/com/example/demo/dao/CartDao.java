@@ -15,26 +15,26 @@ import com.example.demo.vo.Cart;
 public interface CartDao {
 
 	@Select("""
-			SELECT * FROM cart WHERE userid = ${userid}
+			SELECT * FROM cart WHERE userid = #{userid}
 			""")
 	public List<Cart> GetCartList(int userid);
 
 	@Insert("""
-			INSERT INTO cart (userid, productid, options, count)
-            VALUES (#{userid}, #{productid},  #{options, #{count})
-			""")
-	public void AddCartList(int userid, int productid,String color, String size, int count);
+		    INSERT INTO cart (userid, productid, productname, color, size, count, price)
+		    VALUES (#{userid}, #{productid}, #{name}, #{color}, #{size}, #{count}, #{price})
+		""")
+	public void AddCartList(int userid, int productid, String name,String color, String size, int count, int price);
 
 	@Update("""
 			UPDATE cart
-			SET color = ${color},  size = ${size},   count = ${count}
-			WHERE userid = ${userid} AND priductid = #{productid}
+			SET color = #{color},  size = #{size},   count = #{count}
+			WHERE userid = #{userid} AND priductid = #{productid}
 			""")
 	public void ModifyCartList(int userid, int productid, String color, String size, int count);
 
 	@Delete("""
 			DELETE FROM cart
-            WHERE userid = #{userid} AND priductid = #{productid} AND color = ${color} AND  size = ${size}
+            WHERE userid = #{userid} AND priductid = #{productid} AND color = #{color} AND  size = #{size}
 			""")
 	public void DeleteCartList(int userid, int productid, String color, String size);
 	

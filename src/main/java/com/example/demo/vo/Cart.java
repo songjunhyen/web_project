@@ -4,17 +4,25 @@ import lombok.Data;
 
 @Data
 public class Cart {
+	private int id;
 	private int userid;
 	private int productid;	
 	private String productname;
-	private String options ; // 가격에 영향을 주는 기타 옵션들
+	private String color; // 가격에 영향을 주는 기타 옵션들
+	private String size;
 	private int count;
+	private int price;
+	private int priceall;
 
-	public Cart(int userid,	int productid, String productname, String options, int count) {
-	    this.userid = userid;
-	    this.productid = productid;
-	    this.productname = productname;
-	    this.options = options;
-	    this.count = count;
-	  }
+	public Cart(int id, int userid, int productid, String productname, String color, String size, int count, int price, int priceall) {
+		this.id = id;
+		this.userid = userid;
+		this.productid = productid;
+		this.productname = productname;
+		this.color = color;
+		this.size = size;
+		this.count = count;
+		this.price = price;
+		this.priceall = priceall;
 	}
+}
