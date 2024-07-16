@@ -61,8 +61,7 @@ public class UserController {
 		    	int memberid = userService.getid(userid,pw); //서비스에 로그인 메서드 추가하고 로그인하면 Member타입 반환하도록 변경
 		    	session.setAttribute("id", memberid);
 		    	session.setAttribute("userid", userid);
-		    	session.setAttribute("viplevel", 0); // 반환된 Member에 get 써서 그걸 저장하자.
-		    	session.setAttribute("class", 0); // 반환된 Member에 get 써서 그걸 저장하자.. 이걸로 상품 수정 삭제
+		    	session.setAttribute("class", 0); // 등급
 		    }		    
 		return "product/main";
 	}
@@ -71,7 +70,7 @@ public class UserController {
 	public String Logout(HttpSession session) { //세션사용하면 로그아웃 시 id나 userid 사용가능하니 받을 것도 없을 거고...
 		// 세션에서 id 제거
 	    session.removeAttribute("id");
-	    session.removeAttribute("viplevel");
+	    session.removeAttribute("userid");
 	    session.removeAttribute("class");
 	    // 세션 무효화 
 		session.invalidate();

@@ -44,7 +44,6 @@ public interface ProductDao {
 			DELETE FROM product WHERE id = #{productId}
 			""")
 	void deleteProduct(int productId);
-
 	
 	@Select("""
 			SELECT * FROM product

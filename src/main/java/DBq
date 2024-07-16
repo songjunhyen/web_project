@@ -3,28 +3,28 @@ CREATE DATABASE jsp_sb_project;
 USE jsp_sb_project;
 
 CREATE TABLE product (
-      id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-      `name` VARCHAR(255) NOT NULL,
-      price INT NOT NULL,
-      `description` VARCHAR(255) NOT NULL,
-      -- imageUrl VARCHAR(255) NOT NULL,
-      `count` INT NOT NULL,
-      category VARCHAR(255) NOT NULL,
-      maker VARCHAR(255) NOT NULL,
-      color VARCHAR(255) NOT NULL,
-      size VARCHAR(255) NOT NULL,
-      additionalOptions VARCHAR(255) NOT NULL DEFAULT '없음',
-      regDate DATETIME NOT NULL,
-      viewcount INT UNSIGNED NOT NULL DEFAULT 0
-);
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    price INT NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+    -- imageUrl VARCHAR(255) NOT NULL,
+    `count` INT NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    maker VARCHAR(255) NOT NULL,
+    color VARCHAR(255) NOT NULL,
+    size VARCHAR(255) NOT NULL,
+     additionalOptions VARCHAR(255) DEFAULT NULL,
+    regDate DATETIME NOT NULL,
+    viewcount INT UNSIGNED NOT NULL DEFAULT 0
+);  
 
-CREATE TABLE `user` ( -- admin+member class로 구분
+CREATE TABLE `user` ( 
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     userid VARCHAR(30) NOT NULL UNIQUE,
     userpw VARCHAR(60) NOT NULL,
     `name` VARCHAR(60) NOT NULL,
-    email VARCHAR(60) NOT NULL,
+    email VARCHAR(60) NOT NULL UNIQUE,
     class INT NOT NULL,
     address VARCHAR(60)
 );
@@ -32,8 +32,30 @@ CREATE TABLE `user` ( -- admin+member class로 구분
 CREATE TABLE review(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     productid INT UNSIGNED NOT NULL,
-    writer INT UNSIGNED NOT NULL   , 
+    writer VARCHAR(30) NOT NULL, 
     regDate DATETIME NOT NULL,
     reviewtext TEXT NOT NULL,
-    star DOUBLE UNSIGNED NOT NULL,
+    star DOUBLE UNSIGNED NOT NULL
+);
+
+CREATE TABLE cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,    
+    userid INT NOT NULL,
+    productid INT NOT NULL,
+    priductname VARCHAR(255) NOT NULL,
+    color VARCHAR(255) NOT NULL,
+    size VARCHAR(255) NOT NULL,
+    COUNT INT NOT NULL
+    -- UNIQUE KEY unique_product_user (productid, userid) 
+    -- productid와 userid 조합이 유일해야 한다는 제약 조건
+);
+
+CREATE TABLE `admin` ( 
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    adminid VARCHAR(30) NOT NULL UNIQUE,
+    adminpw VARCHAR(60) NOT NULL UNIQUE,
+    `name` VARCHAR(60) NOT NULL,
+    email VARCHAR(60) NOT NULL UNIQUE,
+    adminclass INT NOT NULL  
 );

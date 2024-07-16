@@ -9,8 +9,7 @@ public class Admin {
   private String AdminPw;
   private String name;
   private String email;
-  private int adminClass = 1; // 관리자 등급. 최상위 관리자(전권환), 상품관리자(id랑 등급으로 본인 상품관리), 회원 관리자, 주문 관리자, 고객센터 관리자
-  private int viplevel = 0;
+  private int adminclass = 1; // 관리자 등급. 최상위 관리자(전권환), 상품관리자(id랑 등급으로 본인 상품관리), 회원 관리자, 주문 관리자, 고객센터 관리자
   
   public Admin(String adminId, String adminPw, String name, String email) {
       this.AdminId = adminId;
