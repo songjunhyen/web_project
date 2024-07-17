@@ -21,42 +21,50 @@ public class CartController {
 	CartController(CartService cartservice) {
 		this.cartservice = cartservice;
 	}
-	
+
 	@PostMapping("/Cart/add")
-	public String addCartItem(HttpSession session,  @RequestParam int productid, @RequestParam String name,
-                              @RequestParam String color,
-                              @RequestParam String size,
-                              @RequestParam int count,
-                              @RequestParam int price) {
+	public String addCartItem(HttpSession session, Model model, @RequestParam int productid, @RequestParam String name,
+			@RequestParam String color, @RequestParam String size, @RequestParam int count, @RequestParam int price) {
 		int userid = (int) session.getAttribute("id");
-		cartservice.AddCartList(userid,productid, name, color, size,  count, price);
-		 //return "redirect:/product/detail?id=" + productid;		 
-		 return "redirect:/Cart/List";
-    }
+		boolean ishave = cartservice.checking(userid, productid, color, size);
+		if(!ishave) {
+			cartservice.AddCartList(userid, productid, name, color, size, count, price);
+		}else {
+			int id = cartservice.GetCartId(userid, productid, name, color, size);
+			cartservice.ModifyCartList(id, userid, productid, name, color, size, color, size, count, price);
+		}
+		// return "redirect:/product/detail?id=" + productid;
+		return "redirect:/Cart/List";
+	}
 
 	@GetMapping("/Cart/List")
 	public String GetCartList(HttpSession session, Model model) {
 		int userid = (int) session.getAttribute("id");
 		List<Cart> carts = cartservice.GetCartList(userid);
+		
 		model.addAttribute("carts", carts);
+		
 		return "/cart/cartmain";
 	}
 
 	@PostMapping("/Cart/Modify")
 	@ResponseBody
-	public String ModifyCartList(HttpSession session, @RequestParam int productid, @RequestParam String color,
-			@RequestParam String size, @RequestParam int count) {
-		int userid = (int) session.getAttribute("id");
-		cartservice.ModifyCartList(userid, productid, color, size, count);
-		return "success"; // Ajax 요청에 대한 응답
+	public String ModifyCartList(HttpSession session, @RequestParam int id, @RequestParam String productname, @RequestParam int productid, @RequestParam String a_color,
+	        @RequestParam String a_size, @RequestParam String color,
+	        @RequestParam String size, @RequestParam int count, @RequestParam int price) {		
+		//a_붙은게 수정전 값 그냥이 수정한 값
+	    int userid = (int) session.getAttribute("id");
+	    cartservice.ModifyCartList(id, userid, productid, productname, a_color, a_size, color, size, count, price);
+
+	    return "success"; // Ajax 요청에 대한 응답
 	}
 
 	@PostMapping("/Cart/Delete")
 	@ResponseBody
-	public String DeleteCartList(HttpSession session, @RequestParam int productid, @RequestParam String color,
+	public String DeleteCartList(HttpSession session, @RequestParam int id, @RequestParam int productid, @RequestParam String color,
 			@RequestParam String size) {
 		int userid = (int) session.getAttribute("id");
-		cartservice.DeleteCartList(userid, productid, color, size);
+		cartservice.DeleteCartList(id, userid, productid, color, size);
 		return "success"; // Ajax 요청에 대한 응답
 	}
 }

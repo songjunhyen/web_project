@@ -54,7 +54,7 @@
     </script>
 </head>
 <body>
-<a href="/">Home</a>
+<a href="/test/user/Main">Home</a>
 <br>
 <form id="loginForm" action="/user/login" method="post">
     <label for="userid">¾ÆÀÌµð:</label><br>

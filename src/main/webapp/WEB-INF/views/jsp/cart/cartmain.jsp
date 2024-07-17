@@ -6,17 +6,25 @@
 <head>
 <meta charset="UTF-8">
 <title>장바구니</title>
+
+<%-- include  head에 흠오르 링크 있고 그걸로 나오도록 --%>
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-	//페이지 로드 시 초기 데이터 로드
-	$(document).ready(function() {
-		// 초기 장바구니 목록 로드
-		loadCartList();
-	});
 
 	// 장바구니 목록 초기화 함수
 	function loadCartList() {
-		$('#cartListContainer').load('/Cart/List');
+		$.ajax({
+			url : '/Cart/List',
+			type : 'GET',
+			success : function(response) {
+				$('#cartListContainer').html(response); // 장바구니 목록 업데이트
+			},
+			error : function(error) {
+				console.error('Error:', error);
+			}
+		});
 	}
 
 	// 수정 폼 제출 처리
@@ -56,8 +64,6 @@
 </head>
 <body>
 	<div class="container">
-		<h1>장바구니</h1>
-
 		<!-- 장바구니 목록을 포함할 영역 -->
 		<div id="cartListContainer">
 			<table>
@@ -69,8 +75,8 @@
 						<th>금액</th>
 						<th>색상</th>
 						<th>사이즈</th>
-						<th>수정</th>
-						<th>삭제</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -78,22 +84,43 @@
 						<tr>
 							<td>${cart.id}</td>
 							<td>${cart.productname}</td>
-							<td>
-								<form onsubmit="return submitModifyForm(this)"
-									action="/Cart/Modify" method="post">
-									<input type="hidden" name="productId" value="${cart.productid}">
-									<input type="number" name="count" step="1" min="1"
-										max="${cart.count}" value="${cart.count}">
-									<button type="submit">수정</button>
-								</form>
-							</td>
-							<td>${cart.price}</td>
+							<td>${cart.count}</td>
+							<td>${cart.priceall}</td>
 							<td>${cart.color}</td>
 							<td>${cart.size}</td>
 							<td>
+								<form onsubmit="return submitModifyForm(this)"
+									action="/Cart/Modify" method="post">
+									<input type="hidden" name="id" value="${cart.id}">	
+									<input type="hidden" name="productid" value="${cart.productid}">	
+								    <input type="hidden" name="price" value="${cart.price}">			
+									<input type="hidden" name="productname" value="${cart.productname}">		
+									<input type="hidden" name="a_size" value="${cart.size}">
+									<input type="hidden" name="a_color" value="${cart.color}">						
+									<select name="size">
+										<option value="xs">XS</option>
+										<option value="s">S</option>
+										<option value="m">M</option>
+										<option value="l">L</option>
+										<option value="xl">XL</option>
+									</select> 
+									<select name="color">
+										<option value="Red">Red</option>
+										<option value="Black">Black</option>
+										<option value="White">White</option>
+										<option value="Blue">Blue</option>
+									</select> 
+									<input type="number" name="count" step="1" min="1" max="100" value="${cart.count}">
+									<button type="submit">수정</button>
+								</form>
+							</td>
+							<td>
 								<form onsubmit="return submitDeleteForm(this)"
 									action="/Cart/Delete" method="post">
-									<input type="hidden" name="productId" value="${cart.productid}">
+									<input type="hidden" name="id" value="${cart.id}">	
+									<input type="hidden" name="productid" value="${cart.productid}">
+									<input type="hidden" name="size" value="${cart.size}">
+									<input type="hidden" name="color" value="${cart.color}">
 									<button type="submit">삭제</button>
 								</form>
 							</td>
@@ -102,7 +129,6 @@
 				</tbody>
 			</table>
 		</div>
-
 	</div>
 </body>
 </html>

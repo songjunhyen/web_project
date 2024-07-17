@@ -100,8 +100,19 @@
 			<form action="/Cart/add" method="post">
 				<input type="hidden" name="productid" value="${product.id}" /> 
 				<input type="hidden" name="name" value="${product.name}" />
-				<input type="hidden" name="color" value="${product.color}" /> 
-				<input type="hidden" name="size" value="${product.size}" />
+				<select name="size">
+					<option value="xs">XS</option>
+					<option value="s">S</option>
+					<option value="m">M</option>
+					<option value="l">L</option>
+					<option value="xl">XL</option>
+				</select>
+				<select name="color">
+					<option value="Red">Red</option>
+					<option value="Black">Black</option>
+					<option value="White">White</option>
+					<option value="Blue">Blue</option>
+				</select> 
 				<input type="hidden" name="price" value="${product.price}" />
 		    	<input type="number" name="count" step="1" min="1" max="${product.count}" value="1" placeholder="수량 선택"/>
 				<%-- 사이즈 수량 옵션 선택할 수 있도록 변경 예정 --%>
