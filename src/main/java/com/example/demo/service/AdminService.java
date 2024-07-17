@@ -34,11 +34,11 @@ public class AdminService {
 		return adminDao.getid(userid,pw);
 	}
 
-	public void modify(int id, String name, String email) {
-		adminDao.modify(id, name, email);
+	public void modify(String newpw, String name, String email) {
+		adminDao.modify(newpw, name, email);
 	}
 
-	public void Signout(int id, int email) {
+	public void Signout(int id, String email) {
 		adminDao.signout(id,email);
 	}
 

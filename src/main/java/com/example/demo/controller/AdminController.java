@@ -87,19 +87,29 @@ public class AdminController {
 
 	@PostMapping("/admin/modify")
 	public String modify(HttpSession session,@RequestParam  String name,@RequestParam  String email) {
-		int id = (int) session.getAttribute("id");
-		adminService.modify(id,name, email);
+
+		UUID uuid = UUID.randomUUID();
+		String newpw = uuid.toString().replace("-", "");
+		
+		adminService.modify(newpw,name, email);
 		return "product/main";
 	}
 
 	@GetMapping("/admin/Signout") // jsp쪽에서 비번 체크하도록
-	public String Sigbout(HttpSession session,@RequestParam int email) {
+	public String Sigbout(HttpSession session,@RequestParam String email) {
 		int adminid = (int) session.getAttribute("id");
 		adminService.Signout(adminid,email);
+		
+		return "product/main";
+	}
+	
+	@GetMapping("/admin/logout") // jsp쪽에서 비번 체크하도록
+	public String logout(HttpSession session) {
 		// 세션에서 userid 제거
 		session.removeAttribute("id");
 		// 세션 무효화
 		session.invalidate();
+		
 		return "product/main";
 	}
 }

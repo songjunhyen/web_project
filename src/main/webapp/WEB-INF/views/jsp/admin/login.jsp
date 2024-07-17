@@ -1,14 +1,71 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ê´€ë¦¬ììš© ë¡œê·¸ì¸ íì´ì§€</title>
+<title>Insert title here</title>
+</head>
+ <style>
+        .error-message {
+            color: red;
+            display: none;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            // ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ À¯È¿¼º °Ë»ç
+            $("#userid").blur(function() {
+                checkEmptyInput("userid", "useridError", "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            });
+
+            $("#userpw").blur(function() {
+                checkEmptyInput("userpw", "userpwError", "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            });
+
+            // ÀÔ·Â ÇÊµå ¿À·ù ¸Ş½ÃÁö Ç¥½Ã ÇÔ¼ö
+            function showError(errorId, errorMessage) {
+                $("#" + errorId).html(errorMessage);
+                $("#" + errorId).show();
+            }
+
+            // ÀÔ·Â ÇÊµå ¿À·ù ¸Ş½ÃÁö ¼û±â´Â ÇÔ¼ö
+            function hideError(errorId) {
+                $("#" + errorId).html("");
+                $("#" + errorId).hide();
+            }
+
+            // ¾ÆÀÌµğ, ºñ¹Ğ¹øÈ£°¡ ºñ¾î ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+            function checkEmptyInput(fieldId, errorMessageId, errorMessage) {
+                var fieldValue = $("#" + fieldId).val().trim();
+                var errorMessageElement = $("#" + errorMessageId);
+
+                if (fieldValue === "") {
+                    errorMessageElement.html(errorMessage);
+                    errorMessageElement.show();
+                    return false; // ÀÔ·Â°ªÀÌ ºñ¾îÀÖÀ½
+                } else {
+                    errorMessageElement.html("");
+                    errorMessageElement.hide();
+                    return true; // ÀÔ·Â°ªÀÌ ÀÖÀ½
+                }
+            }           
+        });
+    </script>
 </head>
 <body>
-ì•„ì´ë”” ë¹„ë²ˆ ì…ë ¥í•˜ì—¬ ë¡œê·¸ì¸ 
-ë’¤ë¡œê°€ê¸° ë²„íŠ¼
-ì‹ ê·œ ê´€ë¦¬ì ì¶”ê°€, ìˆ˜ì •, ì‚­ì œ ëŠ” ìƒìœ„ ê´€ë¦¬ì í˜¹ì€ ë³¸ì¸ë§Œ ê°€ëŠ¥í•˜ê²Œ í• ê±°ë¼ ë¡œê·¸ì¸ ì´í›„ì— ì‚¬ìš©ê°€ëŠ¥í•˜ê²Œ í•  ì˜ˆì •
+<a href="/test/user/Main">Home</a>
+<br>
+<form id="loginForm" action="/admin/login" method="post">
+    <label for="userid">¾ÆÀÌµğ:</label><br>
+    <input type="text" id="userid" name="userid" placeholder="¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
+    <div id="useridError" class="error-message"></div><br>
+
+    <label for="pw">ºñ¹Ğ¹øÈ£:</label><br>
+    <input type="password" id="pw" name="pw" placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
+    <div id="userpwError" class="error-message"></div><br>
+
+    <input type="submit" value="·Î±×ÀÎ">
+</form>
 </body>
 </html>

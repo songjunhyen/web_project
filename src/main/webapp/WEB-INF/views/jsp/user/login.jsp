@@ -67,5 +67,6 @@
 
     <input type="submit" value="로그인">
 </form>
+<a href="/user/Signup">회원가입 버튼</a>
 </body>
 </html>
