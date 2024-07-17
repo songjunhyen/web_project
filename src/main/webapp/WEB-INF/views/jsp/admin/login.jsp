@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,28 +14,28 @@
     </style>
     <script>
         $(document).ready(function() {
-            // ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ À¯È¿¼º °Ë»ç
+            // ì…ë ¥ í•„ë“œì—ì„œ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œ ìœ íš¨ì„± ê²€ì‚¬
             $("#userid").blur(function() {
-                checkEmptyInput("userid", "useridError", "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+                checkEmptyInput("userid", "useridError", "ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
             });
 
             $("#userpw").blur(function() {
-                checkEmptyInput("userpw", "userpwError", "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+                checkEmptyInput("userpw", "userpwError", "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
             });
 
-            // ÀÔ·Â ÇÊµå ¿À·ù ¸Ş½ÃÁö Ç¥½Ã ÇÔ¼ö
+            // ì…ë ¥ í•„ë“œ ì˜¤ë¥˜ ë©”ì‹œì§€ í‘œì‹œ í•¨ìˆ˜
             function showError(errorId, errorMessage) {
                 $("#" + errorId).html(errorMessage);
                 $("#" + errorId).show();
             }
 
-            // ÀÔ·Â ÇÊµå ¿À·ù ¸Ş½ÃÁö ¼û±â´Â ÇÔ¼ö
+            // ì…ë ¥ í•„ë“œ ì˜¤ë¥˜ ë©”ì‹œì§€ ìˆ¨ê¸°ëŠ” í•¨ìˆ˜
             function hideError(errorId) {
                 $("#" + errorId).html("");
                 $("#" + errorId).hide();
             }
 
-            // ¾ÆÀÌµğ, ºñ¹Ğ¹øÈ£°¡ ºñ¾î ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+            // ì•„ì´ë””, ë¹„ë°€ë²ˆí˜¸ê°€ ë¹„ì–´ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
             function checkEmptyInput(fieldId, errorMessageId, errorMessage) {
                 var fieldValue = $("#" + fieldId).val().trim();
                 var errorMessageElement = $("#" + errorMessageId);
@@ -43,11 +43,11 @@
                 if (fieldValue === "") {
                     errorMessageElement.html(errorMessage);
                     errorMessageElement.show();
-                    return false; // ÀÔ·Â°ªÀÌ ºñ¾îÀÖÀ½
+                    return false; // ì…ë ¥ê°’ì´ ë¹„ì–´ìˆìŒ
                 } else {
                     errorMessageElement.html("");
                     errorMessageElement.hide();
-                    return true; // ÀÔ·Â°ªÀÌ ÀÖÀ½
+                    return true; // ì…ë ¥ê°’ì´ ìˆìŒ
                 }
             }           
         });
@@ -57,15 +57,15 @@
 <a href="/test/user/Main">Home</a>
 <br>
 <form id="loginForm" action="/admin/login" method="post">
-    <label for="userid">¾ÆÀÌµğ:</label><br>
-    <input type="text" id="userid" name="userid" placeholder="¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
+    <label for="userid">ì•„ì´ë””:</label><br>
+    <input type="text" id="userid" name="userid" placeholder="ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
     <div id="useridError" class="error-message"></div><br>
 
-    <label for="pw">ºñ¹Ğ¹øÈ£:</label><br>
-    <input type="password" id="pw" name="pw" placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
+    <label for="pw">ë¹„ë°€ë²ˆí˜¸:</label><br>
+    <input type="password" id="pw" name="pw" placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
     <div id="userpwError" class="error-message"></div><br>
 
-    <input type="submit" value="·Î±×ÀÎ">
+    <input type="submit" value="ë¡œê·¸ì¸">
 </form>
 </body>
 </html>
