@@ -18,6 +18,11 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@GetMapping("/home/page/Main")
+	public String main() {
+		return "realMain";
+	}
+	
 	@GetMapping("/test/user/Main")
 	public String mainPage() {
 		return "user/main";

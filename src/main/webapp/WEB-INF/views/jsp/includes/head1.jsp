@@ -1,9 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.example.demo.vo.Product"%>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
-<c:if test="${session.getAttribute("islogined") == 0}">
+<c:if test="${session.getAttribute('islogined') == 0}">
     <!-- 이 부분은 session의 id 속성이 1인 경우에만 실행됩니다
      로그인, 관리자창으로, 회원가입버튼 보이게  -->
 </c:if>
@@ -35,8 +38,6 @@
     </c:choose>
 </c:if>
 
-
-</head>
 <!--
 로그인 안되었으면 로그인 회원가입 버튼 보이게
 로그인 되었다면 로그아웃 회원정보 수정 버튼, 장바구니 보이게
@@ -45,6 +46,3 @@ vip레벨이 몇이상이고 class가 몇 이상이면 관리자 관리, 회원�
 
 즉 조건에 따라 더 많은 메뉴가 보이는
  -->
-
-</body>
-</html>
