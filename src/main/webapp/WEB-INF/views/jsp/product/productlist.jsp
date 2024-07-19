@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>리스트</title>
 </head>
+<%@ include file="../includes/head1.jsp"%>
 <body>
 	<div class="table-box-type">
 		<table>
@@ -40,8 +41,34 @@
 					</tr>
 				</c:forEach>
 			</tbody>
-		</table>
-		<button class="btn btn-active btn-sm" onclick="location.href='/test/product/Main'">메인으로</button>
+		</table>	
+			<%-- 페이징 버튼 --%>
+	<div>
+	    <%-- 이전 페이지 --%>
+	    <c:if test="${currentPage > 1}">
+	        <a href="?page=${currentPage - 1}">이전</a>
+	    </c:if>
+	
+	    <%-- 페이지 번호 --%>
+	    <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+	        <c:choose>
+	            <c:when test="${loop.index == currentPage}">
+	                <strong>${loop.index}</strong>
+	            </c:when>
+	            <c:otherwise>
+	                <a href="?page=${loop.index}">${loop.index}</a>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	
+	    <%-- 다음 페이지 --%>
+	    <c:if test="${currentPage < totalPages}">
+	        <a href="?page=${currentPage + 1}">다음</a>
+	    </c:if>
 	</div>
+			
+		<button class="btn btn-active btn-sm" onclick="location.href='/Home/Main'">메인으로</button>
+	</div>
+	
 </body>
 </html>

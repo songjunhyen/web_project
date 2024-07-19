@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.service.ProductService;
 import com.example.demo.vo.Product;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -57,34 +60,70 @@ public class ProductController {
 	}
 
 	@GetMapping("/product/detail")
-	public String detail(HttpSession session, @RequestParam int id, Model model) {
+	public String detail(HttpSession session, @RequestParam int id, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
 		boolean result = productService.searchProduct(id);
 		if (!result) {
 			model.addAttribute("message", "오류가 발생하였습니다.");
 			return "error";
 		} else {
+			String writerid = productService.getwriterid(id);
+			String userid = (String) session.getAttribute("userid");
+
 			Product product = productService.ProductDetail(id);
 
-			// 작성자 본인인지 체크하고 몇초이내에 들어는지 체크 아니면 viewcountup
-			// String user = (String) session.getAttribute("userid");
-			// int userid = (String) session.getAttribute("id");
-			// 값이 없을 경우(비로그인)인 경우 고려
-			// productService.getwriter(id);해서 작성자 가져온 다음
-			// 비교해서 아니고 비로그인 고려해서 viewcountup할지 말지 결정
-			// productService.ViewcountUp(id);
-			// 사용자 식별 코드를 쿠키로 부여하는 것은 사용자를 식별하고 중복 조회를 막는 좋은 방법
-			model.addAttribute("product", product);
-			return "product/productdetail";
+			if (writerid.equals(userid)) {
+				model.addAttribute("product", product);
+				return "product/productdetail";
+			} else {
+				Cookie[] cookies = request.getCookies();
+				boolean shouldUpdateViewCount = true;
+				LocalDateTime now = LocalDateTime.now();
+				String productCookieName = "viewedProduct_" + id;
+
+				if (cookies != null) {
+					for (Cookie cookie : cookies) {
+						if (cookie.getName().equals(productCookieName)) {
+							// 쿠키에서 저장된 시간 추출
+							LocalDateTime lastVisitTime = LocalDateTime.parse(cookie.getValue());
+							if (Duration.between(lastVisitTime, now).toMinutes() <= 30) {
+								shouldUpdateViewCount = false;
+							}
+							break;
+						}
+					}
+				}
+
+				// 쿠키 설정: 제품 ID와 방문 시간을 저장
+				if (shouldUpdateViewCount) {
+					Cookie viewedCookie = new Cookie(productCookieName, now.toString());
+					viewedCookie.setMaxAge(3600); // 쿠키 유효 시간 1시간
+					response.addCookie(viewedCookie);
+
+					// 조회수 증가
+					productService.updateViewCount(id);
+				}
+				model.addAttribute("product", product);
+				return "product/productdetail";
+			}
 		}
 	}
 
 	@GetMapping("/product/list")
-	public String list(Model model) {
+	public String list(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
 		List<Product> products = productService.getProductlist();
 		Collections.reverse(products);
+		int pageSize = 10; // 한 페이지에 보여줄 게시물 수
+		int totalCount = products.size();
+		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+		int start = (page - 1) * pageSize;
+		int end = Math.min(start + pageSize, totalCount);
 
-		model.addAttribute("products", products);
+		List<Product> paginatedProducts = products.subList(start, end);
 
+		model.addAttribute("products", paginatedProducts);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", totalPages);
 		return "product/productlist"; // "product/productadd.jsp"를 반환하도록 설정
 	}
 
@@ -95,12 +134,13 @@ public class ProductController {
 	}
 
 	@PostMapping("/product/ADD")
-	public String addProduct(Model model, @RequestParam String name, @RequestParam int price,
+	public String addProduct(HttpSession session, Model model, @RequestParam String name, @RequestParam int price,
 			@RequestParam String description, @RequestParam int count, @RequestParam String category,
 			@RequestParam String maker, @RequestParam String color, @RequestParam String size,
 			@RequestParam String options) {
 
-		Product product = new Product(0, name, price, description, count, category, maker, color, size, "");
+		String userid = (String) session.getAttribute("userid");
+		Product product = new Product(0,userid, name, price, description, count, category, maker, color, size, "");
 		product.setAdditionalOptions(options);
 
 		productService.addProduct(product);
@@ -122,7 +162,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/product/Modify")
-	public String modifyProduct(Model model, @RequestParam int productId, @RequestParam String name,
+	public String modifyProduct(HttpSession session, Model model, @RequestParam int productId, @RequestParam String name,
 			@RequestParam int price, @RequestParam String description, @RequestParam int count,
 			@RequestParam String category, @RequestParam String maker, @RequestParam String color,
 			@RequestParam String size, @RequestParam List<String> options) {
@@ -133,7 +173,8 @@ public class ProductController {
 			model.addAttribute("message", "제품 수정 중 오류가 발생하였습니다.");
 			return "error";
 		} else {
-			Product product = new Product(0, name, price, description, count, category, maker, color, size, "");
+			String userid = (String) session.getAttribute("userid");
+			Product product = new Product(0,userid, name, price, description, count, category, maker, color, size, "");
 			productService.modifyProduct(productId, product);
 			model.addAttribute("product", product);
 			return "redirect:/product/detail?id=" + productId;

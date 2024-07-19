@@ -54,4 +54,16 @@ public interface ProductDao {
 			SELECT * FROM product WHERE id = #{id}
 			""")
 	Product productDetail(int id);
+	
+	@Select("""
+			SELECT writer FROM product WHERE id = #{id}
+			""")
+	String getwriter(int id);
+
+	@Update("""
+			UPDATE product SET
+			    viewcount = viewcount + 1
+			WHERE id = #{id}
+			""")
+	void updateViewCount(int id);
 }

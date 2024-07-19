@@ -44,4 +44,12 @@ public class ProductService {
 		return productDao.productDetail(id);
 	}
 
+	public String getwriterid(int id) {
+		return productDao.getwriter(id);
+	}
+
+	public void updateViewCount(int id) {
+		productDao.updateViewCount(id);
+	}
+
 }

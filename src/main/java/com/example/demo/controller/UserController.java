@@ -69,7 +69,7 @@ public class UserController {
 		    	session.setAttribute("userid", userid);
 		    	session.setAttribute("class", "user"); // 등급
 		    }		    
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 
 	@GetMapping("/user/Logout")
@@ -81,14 +81,14 @@ public class UserController {
 	    session.removeAttribute("class");
 	    // 세션 무효화 
 		session.invalidate();
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 
 	@PostMapping("/user/modify")
 	public String modify(HttpSession session, String pw, String name, String email, String address) {
 		int id = (int) session.getAttribute("id");
 		userService.modify(id,pw, name, email, address);
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 
 	@GetMapping("/user/Signout") // jsp쪽에서 비번 체크하도록
@@ -96,9 +96,10 @@ public class UserController {
 		userService.Signout(id);
 		// 세션에서 userid 제거
 	    session.removeAttribute("id");
+	    session.removeAttribute("islogined");
 	    // 세션 무효화 
 		session.invalidate();
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 
 }

@@ -3,10 +3,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="includes/head1.jsp"%>
 <meta charset="UTF-8">
 <title>Product List</title>
 </head>
+<%@ include file="includes/head1.jsp"%>
+<style>
+
+    #productContainer {
+        width: 80%;
+        margin: 20px 0;
+        text-align: center;
+    }
+    #productTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    #productTable th, #productTable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    #productTable th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+    #productTable td button {
+        background: none;
+        border: none;
+        color: blue;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    #pagination {
+        margin-top: 20px;
+    }
+    #pagination a {
+        margin: 0 5px;
+        text-decoration: none;
+        color: blue;
+    }
+</style>
 <body>
 	<div id="productContainer">
 		<table id="productTable">

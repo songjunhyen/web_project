@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Product {
   private int id; // num DB쪽에서 자동증가로 할 것
+  private String writer;
   private String name;
   private int price;
   private String description; // 설명
@@ -19,9 +20,10 @@ public class Product {
   private LocalDate regDate; // 등록일
   private int viewcount;
 
-	public Product(int id, String name, int price, String description, int count, String category, String maker, String color,
+	public Product(int id,String writer, String name, int price, String description, int count, String category, String maker, String color,
 			String size, String additionalOptions) {
 		this.id = id;
+		this.writer = writer;
 		this.name = name;
 		this.price = price;
 		this.description = description;

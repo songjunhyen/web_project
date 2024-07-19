@@ -64,6 +64,7 @@
     });
 </script>
 </head>
+<%@ include file="../includes/head1.jsp"%>
 <body>
 	<div class="table-box-type">
 		<table>
