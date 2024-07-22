@@ -74,9 +74,9 @@ public class AdminController {
 			session.setAttribute("id", id);
 			session.setAttribute("userid", userid);
 			session.setAttribute("class", "admin");
-			session.setAttribute("adminclass", foundadmin.getAdminclass()); // 반환된 Admin에 get 써서 그걸 저장하자.
+			session.setAttribute("adminclass", foundadmin.getAdminclass()); // 반환된 Admin에 get 써서 저장.
 		}
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 
 	@GetMapping("/admin/Logout")
@@ -88,7 +88,7 @@ public class AdminController {
 		session.removeAttribute("userid");
 		// 세션 무효화
 		session.invalidate();
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 
 	@PostMapping("/admin/modify")
@@ -106,7 +106,7 @@ public class AdminController {
 		int adminid = (int) session.getAttribute("id");
 		adminService.Signout(adminid,email);
 		
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 	
 	@GetMapping("/admin/logout") // jsp쪽에서 비번 체크하도록
@@ -116,6 +116,6 @@ public class AdminController {
 		// 세션 무효화
 		session.invalidate();
 		
-		return "product/main";
+		return "redirect:/Home/Main";
 	}
 }

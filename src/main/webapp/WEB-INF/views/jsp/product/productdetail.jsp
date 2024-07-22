@@ -67,6 +67,23 @@
 <%@ include file="../includes/head1.jsp"%>
 <body>
 	<div class="table-box-type">
+
+		<div>
+			<h3>제품 이미지</h3>
+			<c:if test="${not empty product.imageUrl}">
+				<!-- 이미지 URL을 콤마로 분리하여 배열로 변환 -->
+				<c:set var="imageUrls" value="${fn:split(product.imageUrl, ',')}" />
+
+				<!-- 이미지 URL 배열을 반복하여 각각의 이미지를 출력 -->
+				<c:forEach var="url" items="${imageUrls}">
+					<img src="${url}" alt="Product Image" style="max-width: 300px;" />
+				</c:forEach>
+			</c:if>
+
+			<c:if test="${empty product.imageUrl}">
+				<p>이미지가 없습니다.</p>
+			</c:if>
+		</div>
 		<table>
 			<thead>
 				<tr>
@@ -97,29 +114,58 @@
 				</tr>
 			</tbody>
 		</table>
+	
+		
 		<div>
-			<form action="/Cart/add" method="post">
-				<input type="hidden" name="productid" value="${product.id}" /> 
-				<input type="hidden" name="name" value="${product.name}" />
-				<select name="size">
-					<option value="xs">XS</option>
-					<option value="s">S</option>
-					<option value="m">M</option>
-					<option value="l">L</option>
-					<option value="xl">XL</option>
-				</select>
-				<select name="color">
-					<option value="Red">Red</option>
-					<option value="Black">Black</option>
-					<option value="White">White</option>
-					<option value="Blue">Blue</option>
-				</select> 
-				<input type="hidden" name="price" value="${product.price}" />
-		    	<input type="number" name="count" step="1" min="1" max="${product.count}" value="1" placeholder="수량 선택"/>
-				<%-- 사이즈 수량 옵션 선택할 수 있도록 변경 예정 --%>
-				<button type="submit">카트에 담기</button>
-			</form>			
+		    <c:if test="${empty sessionScope.islogined}">
+		        <form action="/Temporarily/Cart/add" method="post">
+		            <input type="hidden" name="productid" value="${product.id}" />
+		            <input type="hidden" name="name" value="${product.name}" />
+		            <select name="size">
+		                <option value="xs">XS</option>
+		                <option value="s">S</option>
+		                <option value="m">M</option>
+		                <option value="l">L</option>
+		                <option value="xl">XL</option>
+		            </select>
+		            <select name="color">
+		                <option value="Red">Red</option>
+		                <option value="Black">Black</option>
+		                <option value="White">White</option>
+		                <option value="Blue">Blue</option>
+		            </select>
+		            <input type="hidden" name="price" value="${product.price}" />
+		            <input type="number" name="count" step="1" min="1" max="${product.count}" value="1" placeholder="수량 선택" />
+		            <button type="submit">카트에 담기</button>
+		        </form>
+		    </c:if>
 		</div>
+
+		<div>
+			<c:if test="${sessionScope.islogined eq 1}">
+				<form action="/Cart/add" method="post">
+					<input type="hidden" name="productid" value="${product.id}" /> <input
+						type="hidden" name="name" value="${product.name}" /> <select
+						name="size">
+						<option value="xs">XS</option>
+						<option value="s">S</option>
+						<option value="m">M</option>
+						<option value="l">L</option>
+						<option value="xl">XL</option>
+					</select> <select name="color">
+						<option value="Red">Red</option>
+						<option value="Black">Black</option>
+						<option value="White">White</option>
+						<option value="Blue">Blue</option>
+					</select> <input type="hidden" name="price" value="${product.price}" /> <input
+						type="number" name="count" step="1" min="1" max="${product.count}"
+						value="1" placeholder="수량 선택" />
+					<%-- 사이즈 수량 옵션 선택할 수 있도록 변경 예정 --%>
+					<button type="submit">카트에 담기</button>
+				</form>
+			</c:if>
+		</div>
+
 		<div class="mt-3">
 			<h3>
 				평균 별점: <span id="averageStar">0.0</span>
@@ -132,30 +178,38 @@
 				<div id="reviewsContainer"></div>
 			</div>
 		</section>
-
-		<div class="mt-3">
-			<h3>리뷰 작성</h3>
-			<form action="/Review/add" method="post">
-				<input type="hidden" name="productId" value="${product.id}" />
-				<textarea name="body" placeholder="리뷰를 입력하세요"></textarea>
-				<input type="number" name="star" step="0.5" min="0" max="5"
-					placeholder="별점 (0.0 - 5.0)" />
-				<button type="submit">작성하기</button>
-			</form>
-		</div>
-
+		<c:if test="${sessionScope.islogined eq 1}">
+			<div class="mt-3">
+				<h3>리뷰 작성</h3>
+				<form action="/Review/add" method="post">
+					<input type="hidden" name="productId" value="${product.id}" />
+					<textarea name="body" placeholder="리뷰를 입력하세요"></textarea>
+					<input type="number" name="star" step="0.5" min="0" max="5"
+						placeholder="별점 (0.0 - 5.0)" />
+					<button type="submit">작성하기</button>
+				</form>
+			</div>
+		</c:if>
 		<div class="mt-3 text-sm">
-			<button class="btn btn-active btn-sm" onclick="location.href='/product/list';">목록으로</button>
-						
-			<form action="/product/modify" method="get">
-				<input type="hidden" name="id" value="${product.id}">
-				<button type="submit">수정</button>
-			</form>
-			<form action="/product/delete" method="post">
-				<input type="hidden" name="id" value="${product.id}">
-				<button onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</button>
-			</form>
+			<button class="btn btn-active btn-sm"
+				onclick="location.href='/product/list';">목록으로</button>
+			<c:if test="${sessionScope.userid eq product.writer}">
+
+				<form action="/product/modify" method="get">
+					<input type="hidden" name="id" value="${product.id}">
+					<button type="submit">수정</button>
+				</form>
+				<form action="/product/delete" method="post">
+					<input type="hidden" name="id" value="${product.id}">
+					<button
+						onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</button>
+				</form>
+			</c:if>
 		</div>
 	</div>
 </body>
 </html>
+
+
+
+

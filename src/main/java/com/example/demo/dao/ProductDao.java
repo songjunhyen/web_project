@@ -14,8 +14,8 @@ import com.example.demo.vo.Product;
 public interface ProductDao {
 
 	@Insert("""
-			INSERT INTO product (name, price, description, count, category, maker, color, size, regDate, viewcount)
-			VALUES (#{name}, #{price}, #{description}, #{count}, #{category}, #{maker}, #{color}, #{size}, #{regDate}, #{viewcount})
+			INSERT INTO product (writer, name, price, description, imageUrl, count, category, maker, color, size, regDate, viewcount)
+			VALUES (#{writer}, #{name}, #{price}, #{description}, #{imageUrl}, #{count}, #{category}, #{maker}, #{color}, #{size}, #{regDate}, #{viewcount})
 			""")
 	void addProduct(Product product);
 

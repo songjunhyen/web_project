@@ -15,6 +15,66 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
+    function validateFile(inputId, errorId) {
+        var fileInput = $("#" + inputId)[0];
+        var file = fileInput.files[0];
+        var maxFileSize = 5 * 1024 * 1024; // 5MB
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+        if (file) {
+            if (file.size > maxFileSize) {
+                showError(errorId, "파일 크기는 5MB를 초과할 수 없습니다.");
+                $("#addForm").find("input[type='submit']").prop("disabled", true); // 제출 버튼 비활성화
+            } else if (!allowedExtensions.exec(file.name)) {
+                showError(errorId, "이미지 파일만 업로드할 수 있습니다. (JPG, JPEG, PNG, GIF)");
+                $("#addForm").find("input[type='submit']").prop("disabled", true); // 제출 버튼 비활성화
+            } else {
+                hideError(errorId);
+                $("#addForm").find("input[type='submit']").prop("disabled", false); // 제출 버튼 활성화
+            }
+        }
+    }
+
+    $("#imgurl1").change(function() {
+        validateFile("imgurl1", "imgurlError1");
+    });
+	
+    $("#imgurl2").change(function() {
+        validateFile("imgurl2", "imgurlError2");
+    });
+
+    $("#imgurl3").change(function() {
+        validateFile("imgurl3", "imgurlError3");
+    });
+
+    // 입력 필드 오류 메시지 표시 함수
+    function showError(errorId, errorMessage) {
+        $("#" + errorId).html(errorMessage);
+        $("#" + errorId).show();
+    }
+
+    // 입력 필드 오류 메시지 숨기는 함수
+    function hideError(errorId) {
+        $("#" + errorId).html("");
+        $("#" + errorId).hide();
+    }
+
+    // 입력 필드가 비어 있는지 확인하는 함수
+    function checkEmptyInput(fieldId, errorMessageId, errorMessage) {
+        var fieldValue = $("#" + fieldId).val().trim();
+        var errorMessageElement = $("#" + errorMessageId);
+
+        if (fieldValue === "") {
+            errorMessageElement.html(errorMessage);
+            errorMessageElement.show();
+            return false; // 입력값이 비어있음
+        } else {
+            errorMessageElement.html("");
+            errorMessageElement.hide();
+            return true; // 입력값이 있음
+        }
+    }
+
     // 상품명 입력 필드에서 포커스를 잃었을 때 유효성 검사
     $("#name").blur(function() {
         checkEmptyInput("name", "nameError", "상품명을 입력해주세요.");
@@ -59,39 +119,11 @@ $(document).ready(function() {
     $("#options").blur(function() {
         checkEmptyInput("options", "optionsError", "기타옵션을 입력해주세요.");
     });
-
-    // 입력 필드 오류 메시지 표시 함수
-    function showError(errorId, errorMessage) {
-        $("#" + errorId).html(errorMessage);
-        $("#" + errorId).show();
-    }
-
-    // 입력 필드 오류 메시지 숨기는 함수
-    function hideError(errorId) {
-        $("#" + errorId).html("");
-        $("#" + errorId).hide();
-    }
-
-    // 입력 필드가 비어 있는지 확인하는 함수
-    function checkEmptyInput(fieldId, errorMessageId, errorMessage) {
-        var fieldValue = $("#" + fieldId).val().trim();
-        var errorMessageElement = $("#" + errorMessageId);
-
-        if (fieldValue === "") {
-            errorMessageElement.html(errorMessage);
-            errorMessageElement.show();
-            return false; // 입력값이 비어있음
-        } else {
-            errorMessageElement.html("");
-            errorMessageElement.hide();
-            return true; // 입력값이 있음
-        }
-    }
 });
 </script>
 </head>
 <body>
-<form id="addForm" action="/product/ADD" method="post">
+<form id="addForm" action="/product/ADD" method="post" enctype="multipart/form-data">
     <label for="name">상품명:</label><br>
     <input type="text" id="name" name="name" placeholder="상품명을 입력해주세요"><br>
     <div id="nameError" class="error-message"></div><br>
@@ -104,11 +136,23 @@ $(document).ready(function() {
     <input type="text" id="description" name="description" placeholder="입력해주세요"><br>
     <div id="descriptionError" class="error-message"></div><br>
 
+    <label for="imgurl1">상품 이미지 1 :</label><br>
+    <input type="file" id="imgurl1" name="imageFiles"><br>
+    <div id="imgurlError1" class="error-message"></div><br>    
+
+    <label for="imgurl2">상품 이미지 2 :</label><br>
+    <input type="file" id="imgurl2" name="imageFiles"><br>
+    <div id="imgurlError2" class="error-message"></div><br>    
+
+    <label for="imgurl3">상품 이미지 3 :</label><br>
+    <input type="file" id="imgurl3" name="imageFiles"><br>
+    <div id="imgurlError3" class="error-message"></div><br> 
+
     <label for="count">갯수:</label><br>
     <input type="text" id="count" name="count" placeholder="수량을 입력해주세요"><br>
     <div id="countError" class="error-message"></div><br>
 
-    <label for="category">카테고리:(스크롤 타입으로 선택하도록 변경예정)</label><br>
+    <label for="category">카테고리:</label><br>
     <input type="text" id="category" name="category" placeholder="카테고리를 입력해주세요"><br>
     <div id="categoryError" class="error-message"></div><br>
 
