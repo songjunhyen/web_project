@@ -35,15 +35,15 @@ public class CartService {
 			} else {
 				// 해당 제품이 장바구니에 이미 존재하면 차이나는 것만 업데이트
 				if (color.equals(a_color) && size.equals(a_size)) {
-					cartDao.updateCount(userid, productid, productname, color, size, count); // 수량 업데이트
+					cartDao.updateCount(userid, productid, color, size, count); // 수량 업데이트
 				}
 				if (!color.equals(a_color)) {
-					cartDao.updateColor(id,userid, productid, productname, color, size, count); // 색상 업데이트
+					cartDao.updateColor(id,userid, productid, color, size); // 색상 업데이트
 				}
 				if (!size.equals(a_size)) {
-					cartDao.updateSize(id, userid, productid, productname, color, size, count); // 사이즈 업데이트
+					cartDao.updateSize(id, userid, productid, color, size); // 사이즈 업데이트
 				}if(!color.equals(a_color)&&!size.equals(a_size)) {
-					cartDao.updateTwo(id, userid, productid, productname, color, size, count);
+					cartDao.updateTwo(id, userid, productid, color, size);
 				}
 			}
 		} else {

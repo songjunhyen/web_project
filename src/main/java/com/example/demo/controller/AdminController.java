@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.form.LoginForm;
 import com.example.demo.service.AdminService;
 import com.example.demo.vo.Admin;
 
@@ -30,7 +31,8 @@ public class AdminController {
 	}
 
 	@GetMapping("/admin/Login")
-	public String Login() {
+	public String Login(Model model) {
+		model.addAttribute("loginForm", new LoginForm());
 		return "admin/login";
 	}
 
@@ -62,7 +64,10 @@ public class AdminController {
 	}
 
 	@PostMapping("/admin/login")
-	public String login(HttpSession session, Model model,@RequestParam  String userid,@RequestParam  String pw) {
+	public String login(HttpSession session, Model model, LoginForm loginForm) {
+		String userid = loginForm.getUserid();
+	    String pw = loginForm.getPw();
+		
 		boolean idExists = adminService.checking(userid, pw);
 		if (!idExists) {
 			model.addAttribute("message", "아이디 혹은 비밀번호가 잘못되었습니다.");

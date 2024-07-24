@@ -55,16 +55,24 @@ public class CartController {
 
 	@GetMapping("/Cart/List")
 	public String GetCartList(HttpSession session, Model model) {
-		int userid = (int) session.getAttribute("id");
-		List<Cart> carts = cartservice.GetCartList(userid);
-
-		model.addAttribute("carts", carts);
-
-		return "/cart/cartmain";
+		Integer userid = (Integer) session.getAttribute("id");
+	    
+	    // 사용자 ID가 null인 경우(로그인되지 않은 경우) 처리
+	    if (userid == null) {
+	        return "no id"; // 로그인 페이지로 리다이렉트
+	    }
+	    
+	    // 장바구니 목록 가져오기
+	    List<Cart> carts = cartservice.GetCartList(userid); // 서비스 메서드 호출
+	    
+	    // 장바구니 목록을 모델에 추가
+	    model.addAttribute("carts", carts);
+	    
+	    // 뷰 이름 반환
+	    return "cart/cartmain";
 	}
 
 	@PostMapping("/Cart/Modify")
-	@ResponseBody
 	public String ModifyCartList(HttpSession session, @RequestParam int id, @RequestParam String productname,
 			@RequestParam int productid, @RequestParam String a_color, @RequestParam String a_size,
 			@RequestParam String color, @RequestParam String size, @RequestParam int count, @RequestParam int price) {
@@ -72,16 +80,15 @@ public class CartController {
 		int userid = (int) session.getAttribute("id");
 		cartservice.ModifyCartList(id, userid, productid, productname, a_color, a_size, color, size, count, price);
 
-		return "success"; // Ajax 요청에 대한 응답
+		return "redirect:/Cart/List";// Ajax 요청에 대한 응답
 	}
 
 	@PostMapping("/Cart/Delete")
-	@ResponseBody
 	public String DeleteCartList(HttpSession session, @RequestParam int id, @RequestParam int productid,
 			@RequestParam String color, @RequestParam String size) {
 		int userid = (int) session.getAttribute("id");
 		cartservice.DeleteCartList(id, userid, productid, color, size);
-		return "success"; // Ajax 요청에 대한 응답
+		return "redirect:/Cart/List"; // Ajax 요청에 대한 응답
 	}
 
 	@PostMapping("/Temporarily/Cart/add")

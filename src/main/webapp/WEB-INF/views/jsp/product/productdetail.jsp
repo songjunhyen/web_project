@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="com.example.demo.vo.Product"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
@@ -27,6 +28,7 @@
                     if (review.writer == '${sessionScope.userid}') {
                         reviewsHtml += '<div id="modifyForm">';
                         reviewsHtml += '<form action="/Review/modify" method="post" onsubmit="return confirm(\'정말 수정하시겠습니까?\');">';
+                        reviewsHtml += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">';
                         reviewsHtml += '<input type="hidden" name="productid" value="' + ${product.id} + '" />';
                         reviewsHtml += '<input type="hidden" name="reviewid" value="' + review.id + '" />';
                         reviewsHtml += '<textarea class="textarea textarea-bordered textarea-lg w-full" name="body" placeholder="수정 리뷰를 입력해주세요"></textarea>';
@@ -35,6 +37,7 @@
                         reviewsHtml += '<button type="submit" class="btn btn-active btn-sm">수정하기</button>';
                         reviewsHtml += '</div></div></form></div>';
                         reviewsHtml += '<form action="/Review/delete" method="post" onsubmit="return confirm(\'정말 삭제하시겠습니까?\');">';
+                        reviewsHtml += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">';
                         reviewsHtml += '<input type="hidden" name="productid" value="' + ${product.id} + '" />';
                         reviewsHtml += '<input type="hidden" name="reviewid" value="' + review.id + '" />';
                         reviewsHtml += '<div class="mt-4 reply-border p-4">';
@@ -119,6 +122,7 @@
 		<div>
 		    <c:if test="${empty sessionScope.islogined}">
 		        <form action="/Temporarily/Cart/add" method="post">
+		            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">		        
 		            <input type="hidden" name="productid" value="${product.id}" />
 		            <input type="hidden" name="name" value="${product.name}" />
 		            <select name="size">
@@ -144,6 +148,7 @@
 		<div>
 			<c:if test="${sessionScope.islogined eq 1}">
 				<form action="/Cart/add" method="post">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">		
 					<input type="hidden" name="productid" value="${product.id}" /> <input
 						type="hidden" name="name" value="${product.name}" /> <select
 						name="size">
@@ -182,11 +187,11 @@
 			<div class="mt-3">
 				<h3>리뷰 작성</h3>
 				<form action="/Review/add" method="post">
-					<input type="hidden" name="productId" value="${product.id}" />
-					<textarea name="body" placeholder="리뷰를 입력하세요"></textarea>
-					<input type="number" name="star" step="0.5" min="0" max="5"
-						placeholder="별점 (0.0 - 5.0)" />
-					<button type="submit">작성하기</button>
+				    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+				    <input type="hidden" name="productId" value="${product.id}" />
+				    <textarea name="body" placeholder="리뷰를 입력하세요"></textarea>
+				    <input type="number" name="star" step="0.5" min="0" max="5" placeholder="별점 (0.0 - 5.0)" />
+				    <button type="submit">작성하기</button>
 				</form>
 			</div>
 		</c:if>
@@ -194,13 +199,16 @@
 			<button class="btn btn-active btn-sm"
 				onclick="location.href='/product/list';">목록으로</button>
 			<c:if test="${sessionScope.userid eq product.writer}">
-
 				<form action="/product/modify" method="get">
-					<input type="hidden" name="id" value="${product.id}">
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}"> <input type="hidden" name="id"
+						value="${product.id}">
 					<button type="submit">수정</button>
 				</form>
 				<form action="/product/delete" method="post">
-					<input type="hidden" name="id" value="${product.id}">
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}"> <input type="hidden" name="id"
+						value="${product.id}">
 					<button
 						onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</button>
 				</form>

@@ -4,8 +4,24 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.example.demo.vo.Product"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
+
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		var csrfHeader = $('meta[name="csrf-header"]').attr('content');
+		var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+		$.ajaxSetup({
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(csrfHeader, csrfToken);
+			}
+		});
+	});
+</script>
 <style>
 body, ul, li {
 	list-style: none;
@@ -15,7 +31,7 @@ body, ul, li {
 
 .top-bar {
 	display: flex;
-	justify-content: flex-end; /* 우측 정렬 */
+	justify-content: flex-end; 
 	background-color: #333;
 	padding: 10px;
 }
@@ -52,44 +68,37 @@ body, ul, li {
 </style>
 
 <header>
-    <nav class="top-bar">
-        <ul>
-            <li><a href="/Home/Main">Home</a></li>
-            <c:if test="${empty sessionScope.islogined}">
-                <li><a href="/user/Login">Login</a></li>
-                <li><a href="/user/Signup">Join</a></li>
-                <li><a href="/temp/Cart">Cart</a></li>
-            </c:if>
-            <c:if test="${sessionScope['class'] == 'user'}">
-                <li><a href="/user/Logout">Logout</a></li>
-                <li><a href="/user/Modify">Modify</a></li>
-                <li><a href="/Cart/List">Cart</a></li>
-            </c:if>
-            <c:if test="${sessionScope['class'] == 'admin'}">
-                <li><a href="/admin/Logout">Logout</a></li>
-                <li><a href="/product/add">Registration</a></li>
-                <c:if test="${sessionScope.adminclass == '0'}">
-                    <li><a href="/admin/Modify">Modify</a></li>
-                </c:if>
-            </c:if>
-            <c:if test="${empty sessionScope.islogined}">
-                <li><a href="/admin/Login">Admin</a></li>
-            </c:if>
-            <li><a href="/Home/Main">Product</a></li>
-            <li><a href="#">Help</a></li>
-        </ul>
-    </nav>
-    <div class='title'>
-        <p style="text-align: center;">
-            <a href="Main" target="_blank">E-커머스 프로젝트</a>
-        </p>
-    </div>
+	<nav class="top-bar">
+		<ul>
+			<li><a href="/Home/Main">Home</a></li>
+			<c:if test="${empty sessionScope.islogined}">
+				<li><a href="/user/Login">Login</a></li>
+				<li><a href="/user/Signup">Join</a></li>
+				<li><a href="/temp/Cart">Cart</a></li>
+			</c:if>
+			<c:if test="${sessionScope['class'] == 'user'}">
+				<li><a href="/user/Logout">Logout</a></li>
+				<li><a href="/user/Modify">Modify</a></li>
+				<li><a href="/Cart/List">Cart</a></li>
+			</c:if>
+			<c:if test="${sessionScope['class'] == 'admin'}">
+				<li><a href="/admin/Logout">Logout</a></li>
+				<li><a href="/product/add">Registration</a></li>
+				<c:if test="${sessionScope.adminclass == '0'}">
+					<li><a href="/admin/Modify">Modify</a></li>
+				</c:if>
+			</c:if>
+			<c:if test="${empty sessionScope.islogined}">
+				<li><a href="/admin/Login">Admin</a></li>
+			</c:if>
+			<li><a href="/Home/Main">Product</a></li>
+			<li><a href="#">Help</a></li>
+		</ul>
+	</nav>
+	<div class='title'>
+		<p style="text-align: center;">
+			<a href="Main" target="_blank">E-커머스 프로젝트</a>
+		</p>
+	</div>
 </header>
-<!--
-로그인 안되었으면 로그인 회원가입 버튼 보이게
-로그인 되었다면 로그아웃 회원정보 수정 버튼, 장바구니 보이게
-class가 몇이상이면 상품 등록 버튼, 상품 수정 버튼 보이게 회원정보 수정 등 몇몇은 관리자용으로 주소가 다르지만 똑같이 생긴 버튼 보이게
-vip레벨이 몇이상이고 class가 몇 이상이면 관리자 관리, 회원관리 버튼 보이게
 
-즉 조건에 따라 더 많은 메뉴가 보이는
- -->

@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>È¸¿ø°¡ÀÔ</title>
+<title>íšŒì›ê°€ì…</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     .error-message {
@@ -13,49 +14,49 @@
 </style>
 <script>
     $(document).ready(function() {
-        // ¾ÆÀÌµğ ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ À¯È¿¼º °Ë»ç
+        // ì•„ì´ë”” ì…ë ¥ í•„ë“œì—ì„œ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œ ìœ íš¨ì„± ê²€ì‚¬
         $("#userid").blur(function() {
-            checkEmptyInput("userid", "useridError", "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            checkEmptyInput("userid", "useridError", "ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         });
 
-        // ºñ¹Ğ¹øÈ£ ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ À¯È¿¼º °Ë»ç
+        // ë¹„ë°€ë²ˆí˜¸ ì…ë ¥ í•„ë“œì—ì„œ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œ ìœ íš¨ì„± ê²€ì‚¬
         $("#pw").blur(function() {
-            checkEmptyInput("pw", "pwError", "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            checkEmptyInput("pw", "pwError", "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         });
 
-        // ºñ¹Ğ¹øÈ£ È®ÀÎ ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ ºñ¹Ğ¹øÈ£ ÀÏÄ¡ ¿©ºÎ È®ÀÎ
+        // ë¹„ë°€ë²ˆí˜¸ í™•ì¸ ì…ë ¥ í•„ë“œì—ì„œ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œ ë¹„ë°€ë²ˆí˜¸ ì¼ì¹˜ ì—¬ë¶€ í™•ì¸
         $("#userpw2").blur(function() {
             checkPasswordMatch();
         });
 
-        // ´Ğ³×ÀÓ ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ À¯È¿¼º °Ë»ç
+        // ë‹‰ë„¤ì„ ì…ë ¥ í•„ë“œì—ì„œ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œ ìœ íš¨ì„± ê²€ì‚¬
         $("#name").blur(function() {
-            checkEmptyInput("name", "nameError", "´Ğ³×ÀÓÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            checkEmptyInput("name", "nameError", "ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         });
 
-        // ÀÌ¸ŞÀÏ ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ À¯È¿¼º °Ë»ç
+        // ì´ë©”ì¼ ì…ë ¥ í•„ë“œì—ì„œ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œ ìœ íš¨ì„± ê²€ì‚¬
         $("#email").blur(function() {
-            checkEmptyInput("email", "emailError", "ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            checkEmptyInput("email", "emailError", "ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         });
 
-        // ÁÖ¼Ò ÀÔ·Â ÇÊµå¿¡¼­ Æ÷Ä¿½º¸¦ ÀÒ¾úÀ» ¶§ À¯È¿¼º °Ë»ç
+        // ì£¼ì†Œ ì…ë ¥ í•„ë“œì—ì„œ í¬ì»¤ìŠ¤ë¥¼ ìƒì—ˆì„ ë•Œ ìœ íš¨ì„± ê²€ì‚¬
         $("#address").blur(function() {
-            checkEmptyInput("address", "addressError", "ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            checkEmptyInput("address", "addressError", "ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         });
 
-        // ÀÔ·Â ÇÊµå ¿À·ù ¸Ş½ÃÁö Ç¥½Ã ÇÔ¼ö
+        // ì…ë ¥ í•„ë“œ ì˜¤ë¥˜ ë©”ì‹œì§€ í‘œì‹œ í•¨ìˆ˜
         function showError(errorId, errorMessage) {
             $("#" + errorId).html(errorMessage);
             $("#" + errorId).show();
         }
 
-        // ÀÔ·Â ÇÊµå ¿À·ù ¸Ş½ÃÁö ¼û±â´Â ÇÔ¼ö
+        // ì…ë ¥ í•„ë“œ ì˜¤ë¥˜ ë©”ì‹œì§€ ìˆ¨ê¸°ëŠ” í•¨ìˆ˜
         function hideError(errorId) {
             $("#" + errorId).html("");
             $("#" + errorId).hide();
         }
 
-        // ÇÊµå°¡ ºñ¾î ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+        // í•„ë“œê°€ ë¹„ì–´ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
         function checkEmptyInput(fieldId, errorMessageId, errorMessage) {
             var fieldValue = $("#" + fieldId).val().trim();
             var errorMessageElement = $("#" + errorMessageId);
@@ -63,22 +64,22 @@
             if (fieldValue === "") {
                 errorMessageElement.html(errorMessage);
                 errorMessageElement.show();
-                return false; // ÀÔ·Â°ªÀÌ ºñ¾îÀÖÀ½
+                return false; // ì…ë ¥ê°’ì´ ë¹„ì–´ìˆìŒ
             } else {
                 errorMessageElement.html("");
                 errorMessageElement.hide();
-                return true; // ÀÔ·Â°ªÀÌ ÀÖÀ½
+                return true; // ì…ë ¥ê°’ì´ ìˆìŒ
             }
         }
 
-        // ºñ¹Ğ¹øÈ£¿Í ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ ÀÏÄ¡ÇÏ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+        // ë¹„ë°€ë²ˆí˜¸ì™€ ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì´ ì¼ì¹˜í•˜ëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
         function checkPasswordMatch() {
             var pw = $("#pw").val().trim();
             var userpw2 = $("#userpw2").val().trim();
             var pw2Error = $("#pw2Error");
 
             if (pw !== userpw2) {
-                pw2Error.html("ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+                pw2Error.html("ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
                 pw2Error.show();
                 return false;
             } else {
@@ -91,32 +92,33 @@
 </script>
 </head>
 <body>
-<form id="signupForm" action="/user/signup" method="post">
-    <label for="userid">¾ÆÀÌµğ:</label><br>
-    <input type="text" id="userid" name="userid" placeholder="¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
-    <div id="useridError" class="error-message"></div><br>
+    <form:form modelAttribute="SignUpForm" action="/user/signup" method="post">
+        <form:hidden path="${_csrf.parameterName}" value="${_csrf.token}" />
+        <label for="userid">ì•„ì´ë””:</label><br>
+        <input type="text" id="userid" name="userid" placeholder="ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
+        <div id="useridError" class="error-message"></div><br>
 
-    <label for="pw">ºñ¹Ğ¹øÈ£:</label><br>
-    <input type="password" id="pw" name="pw" placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
-    <div id="pwError" class="error-message"></div><br>
+        <label for="pw">ë¹„ë°€ë²ˆí˜¸:</label><br>
+        <input type="password" id="pw" name="pw" placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
+        <div id="pwError" class="error-message"></div><br>
 
-    <label for="userpw2">ºñ¹Ğ¹øÈ£ È®ÀÎ:</label><br>
-    <input type="password" id="userpw2" name="userpw2" placeholder="ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
-    <div id="pw2Error" class="error-message"></div><br>
+        <label for="userpw2">ë¹„ë°€ë²ˆí˜¸ í™•ì¸:</label><br>
+        <input type="password" id="userpw2" name="userpw2" placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
+        <div id="pw2Error" class="error-message"></div><br>
 
-    <label for="name">´Ğ³×ÀÓ:</label><br>
-    <input type="text" id="name" name="name" placeholder="´Ğ³×ÀÓÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
-    <div id="nameError" class="error-message"></div><br>
+        <label for="name">ë‹‰ë„¤ì„:</label><br>
+        <input type="text" id="name" name="name" placeholder="ë‹‰ë„¤ì„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
+        <div id="nameError" class="error-message"></div><br>
 
-    <label for="email">ÀÌ¸ŞÀÏ:</label><br>
-    <input type="text" id="email" name="email" placeholder="ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
-    <div id="emailError" class="error-message"></div><br>
+        <label for="email">ì´ë©”ì¼:</label><br>
+        <input type="text" id="email" name="email" placeholder="ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
+        <div id="emailError" class="error-message"></div><br>
 
-    <label for="address">ÁÖ¼Ò:</label><br>
-    <input type="text" id="address" name="address" placeholder="ÁÖ¼Ò¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä"><br>
-    <div id="addressError" class="error-message"></div><br>
+        <label for="address">ì£¼ì†Œ:</label><br>
+        <input type="text" id="address" name="address" placeholder="ì£¼ì†Œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”"><br>
+        <div id="addressError" class="error-message"></div><br>
 
-    <input type="submit" value="È¸¿ø°¡ÀÔ">
-</form>
+        <input type="submit" value="íšŒì›ê°€ì…">
+    </form:form>
 </body>
 </html>

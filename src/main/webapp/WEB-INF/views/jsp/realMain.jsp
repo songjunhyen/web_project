@@ -80,6 +80,7 @@
 						<td>${product.category}</td>
 						<td>
 							<form action="/product/Detail" method="post">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 								<input type="hidden" name="id" value="${product.id}">
 								<button type="submit">${product.name}</button>
 							</form>

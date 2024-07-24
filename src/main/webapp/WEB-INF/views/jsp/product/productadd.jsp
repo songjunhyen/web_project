@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html>
@@ -124,6 +125,7 @@ $(document).ready(function() {
 </head>
 <body>
 <form id="addForm" action="/product/ADD" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <label for="name">상품명:</label><br>
     <input type="text" id="name" name="name" placeholder="상품명을 입력해주세요"><br>
     <div id="nameError" class="error-message"></div><br>

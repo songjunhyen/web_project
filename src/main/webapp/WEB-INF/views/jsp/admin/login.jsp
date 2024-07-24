@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<%@ include file="../includes/head1.jsp"%>
  <style>
         .error-message {
             color: red;
@@ -56,7 +58,8 @@
 <body>
 <a href="/test/user/Main">Home</a>
 <br>
-<form id="loginForm" action="/admin/login" method="post">
+<form:form id="loginForm" action="/admin/login" method="post" modelAttribute="loginForm">
+	<form:hidden path="${_csrf.parameterName}" value="${_csrf.token}" />
     <label for="userid">아이디:</label><br>
     <input type="text" id="userid" name="userid" placeholder="아이디를 입력해주세요"><br>
     <div id="useridError" class="error-message"></div><br>
@@ -66,6 +69,6 @@
     <div id="userpwError" class="error-message"></div><br>
 
     <input type="submit" value="로그인">
-</form>
+</form:form>
 </body>
 </html>

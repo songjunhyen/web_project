@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,6 +63,7 @@
 	}
 </script>
 </head>
+<%@ include file="../includes/head1.jsp"%>
 <body>
 	<div class="container">
 		<!-- 장바구니 목록을 포함할 영역 -->
@@ -91,6 +93,7 @@
 							<td>
 								<form onsubmit="return submitModifyForm(this)"
 									action="/Cart/Modify" method="post">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 									<input type="hidden" name="id" value="${cart.id}">	
 									<input type="hidden" name="productid" value="${cart.productid}">	
 								    <input type="hidden" name="price" value="${cart.price}">			
@@ -117,6 +120,7 @@
 							<td>
 								<form onsubmit="return submitDeleteForm(this)"
 									action="/Cart/Delete" method="post">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 									<input type="hidden" name="id" value="${cart.id}">	
 									<input type="hidden" name="productid" value="${cart.productid}">
 									<input type="hidden" name="size" value="${cart.size}">

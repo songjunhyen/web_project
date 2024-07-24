@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.form.LoginForm;
+import com.example.demo.form.SignUpForm;
 import com.example.demo.service.UserService;
 import com.example.demo.vo.Member;
 
@@ -29,13 +31,15 @@ public class UserController {
 	}
 
 	@GetMapping("/user/Signup")
-	public String signUP() {
+	public String signUP(Model model) {
+		model.addAttribute("SignUpForm", new SignUpForm());
 		return "user/signup";
 	}
 
 	@GetMapping("/user/Login")
-	public String Login() {
-		return "user/login";
+	public String Login(Model model) {
+		model.addAttribute("loginForm", new LoginForm()); // LoginForm은 로그인 폼에 필요한 필드를 가진 클래스입니다.
+	    return "user/login";
 	}
 
 	@GetMapping("/user/Modify")
@@ -50,14 +54,23 @@ public class UserController {
 	}
 
 	@PostMapping("/user/signup")
-	public String signup(String userid, String pw, String name, String email, String address) {
+	public String signup(Model model,SignUpForm signupform) {
+        String userid = signupform.getUserid();
+        String pw = signupform.getPw();
+        String name = signupform.getName();
+        String email = signupform.getEmail();
+        String address = signupform.getAddress();
+        
 		Member newMember = new Member(userid, pw, name, email, address);
 		userService.signup(newMember);
-		return "user/login";
+		return "redirect:/Home/Main";
 	}
 
 	@PostMapping("/user/login")
-	public String login(HttpSession session, Model model, String userid, String pw) {		
+	public String login(HttpSession session, Model model, LoginForm loginForm) {	
+        String userid = loginForm.getUserid();
+        String pw = loginForm.getPw();
+        
 		 boolean idExists = userService.checking(userid,pw);
 		    if (!idExists) {
 		        model.addAttribute("message", "아이디 혹은 비밀번호가 잘못되었습니다.");
