@@ -49,4 +49,8 @@ public class AdminService {
 	public Admin getbyemail(String email) {
 		return adminDao.getbyemail(email);
 	}
+
+	public int getadminclass(String username) {
+		return adminDao.getadminclass(username);
+	}
 }

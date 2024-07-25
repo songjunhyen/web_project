@@ -68,12 +68,7 @@ VALUES
     ('user2', '제품 B', 20000, '제품 B의 설명', 30, '카테고리 B', '제조사 Y', 'Blue', 'm', NOW(), 0),
     ('user3', '제품 C', 15000, '제품 C의 설명', 20, '카테고리 A', '제조사 Z', 'White', 's', NOW(), 0);
 
--- `user` 테이블에 샘플 데이터 삽입
-INSERT INTO `user` (regDate, userid, userpw, `name`, email, class, address)
-VALUES 
-    (NOW(), '12', '12', '사용자 1', 'user1@example.com', 1, '주소 1'),
-    (NOW(), 'user2', 'password2', '사용자 2', 'user2@example.com', 1, '주소 2'),
-    (NOW(), 'user3', 'password3', '사용자 3', 'user3@example.com', 2, '주소 3');
+
 
 -- `review` 테이블에 샘플 데이터 삽입
 INSERT INTO review (productid, writer, regDate, reviewtext, star)

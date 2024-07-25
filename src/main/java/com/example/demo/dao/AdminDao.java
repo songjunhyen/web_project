@@ -54,4 +54,9 @@ public interface AdminDao {
             SELECT * FROM `admin` WHERE email = #{email}
             """)
     Admin getbyemail(String email);
+
+    @Select("""
+            SELECT adminclass From `admin` WHERE adminid = #{username}
+            """)      
+	int getadminclass(String username);
 }

@@ -62,7 +62,9 @@ public class AdminController {
 		adminService.signup(newAdmin);
 		return "admin/singupreport"; // 이 jsp파일에서 가입시 생성한 id, pw 보여주고 그걸로 사용
 	}
-
+	
+/*
+//스프링 시큐리티에서 로그인 하여 메서드 불필요
 	@PostMapping("/admin/login")
 	public String login(HttpSession session, Model model, LoginForm loginForm) {
 		String userid = loginForm.getUserid();
@@ -83,7 +85,8 @@ public class AdminController {
 		}
 		return "redirect:/Home/Main";
 	}
-
+*/
+	
 	@GetMapping("/admin/Logout")
 	public String Logout(HttpSession session) { // 세션사용하면 로그아웃 시 id나 userid 사용가능하니 받을 것도 없을 거고...
 		// 세션에서 userid 제거

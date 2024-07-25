@@ -28,6 +28,9 @@ public interface UserDao {
 			WHERE id = #{id}
 			""")
 	void signout(int id);
+	
+	@Select("SELECT * FROM `user` WHERE userid = #{userid}")
+    Member findByUserid(String userid);
 
 	@Select("""
 			SELECT COUNT(*) FROM `user` WHERE userid = #{userid}
@@ -40,8 +43,8 @@ public interface UserDao {
 	int checkpw(String userid, String pw);
 
 	@Select("""
-			SELECT id FROM `user` WHERE userid = #{userid} AND userpw = #{pw}
+			SELECT id FROM `user` WHERE userid = #{userid}
 			""")
-	int getid(String userid, String pw);
+	int getid(String userid);
 
 }

@@ -65,7 +65,8 @@ public class UserController {
 		userService.signup(newMember);
 		return "redirect:/Home/Main";
 	}
-
+/*
+ //스프링 시큐리티에서 로그인 하여 메서드 불필요
 	@PostMapping("/user/login")
 	public String login(HttpSession session, Model model, LoginForm loginForm) {	
         String userid = loginForm.getUserid();
@@ -84,7 +85,7 @@ public class UserController {
 		    }		    
 		return "redirect:/Home/Main";
 	}
-
+*/
 	@GetMapping("/user/Logout")
 	public String Logout(HttpSession session) { //세션사용하면 로그아웃 시 id나 userid 사용가능하니 받을 것도 없을 거고...
 		// 세션에서 id 제거
