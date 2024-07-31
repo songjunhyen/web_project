@@ -7,24 +7,45 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dao.AdminDao;
 import com.example.demo.dao.UserDao;
+import com.example.demo.vo.Admin;
 import com.example.demo.vo.Member;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+	@Autowired
+	private UserDao userDao;
 
-    @Autowired
-    private UserDao userDao;
+	@Autowired
+	private AdminDao adminDao;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = userDao.findByUserid(username);
-        if (member == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        // UserDetails 객체를 반환합니다. 비밀번호와 권한을 설정할 수 있습니다.
-        return new User(member.getUserid(), member.getUserpw(), new ArrayList<>());
-    }
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// 관리자 검색
+		Admin admin = adminDao.findByUserid(username);
+		if (admin != null) {
+			// 관리자 정보를 반환
+			return new User(admin.getAdminId(), admin.getAdminPw(), new ArrayList<>());
+		}
+
+		// 사용자 검색
+		Member member = userDao.findByUserid(username);
+		if (member != null) {
+			// 사용자 정보를 반환
+			return new User(member.getUserid(), member.getUserpw(), new ArrayList<>());
+		}
+
+		throw new UsernameNotFoundException("User not found");
+	}	
+	
 }

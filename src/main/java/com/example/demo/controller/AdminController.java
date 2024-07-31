@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.form.LoginForm;
 import com.example.demo.service.AdminService;
 import com.example.demo.vo.Admin;
 
@@ -24,16 +23,14 @@ public class AdminController {
 		this.adminService = adminService;
 	}
 
-	// head에 클래스
+	@GetMapping("/admin/Dashboard")
+	public String Board() {
+		return "admin/dashboard";
+	}
+
 	@GetMapping("/admin/Signup")
 	public String signUP() {
 		return "admin/signup";
-	}
-
-	@GetMapping("/admin/Login")
-	public String Login(Model model) {
-		model.addAttribute("loginForm", new LoginForm());
-		return "admin/login";
 	}
 
 	@GetMapping("/admin/Modify")
@@ -49,7 +46,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/admin/signup")
-	public String signup(@RequestParam String name,@RequestParam  String email,@RequestParam  int adminclass) {
+	public String signup(@RequestParam String name, @RequestParam String email, @RequestParam int adminclass) {
 		LocalDateTime currentTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 		String formattedDateTime = currentTime.format(formatter);
@@ -62,68 +59,32 @@ public class AdminController {
 		adminService.signup(newAdmin);
 		return "admin/singupreport"; // 이 jsp파일에서 가입시 생성한 id, pw 보여주고 그걸로 사용
 	}
-	
-/*
-//스프링 시큐리티에서 로그인 하여 메서드 불필요
-	@PostMapping("/admin/login")
-	public String login(HttpSession session, Model model, LoginForm loginForm) {
-		String userid = loginForm.getUserid();
-	    String pw = loginForm.getPw();
-		
-		boolean idExists = adminService.checking(userid, pw);
-		if (!idExists) {
-			model.addAttribute("message", "아이디 혹은 비밀번호가 잘못되었습니다.");
-			return "error"; // 사용자가 존재하지 않는 경우 에러 페이지로 리턴
-		} else {
-			int id = adminService.getid(userid, pw); // 서비스에 로그인 메서드 추가하고 로그인하면 Admin타입 반환하도록 변경
-			Admin foundadmin = adminService.getadmin(id, userid, pw);
-			session.setAttribute("islogined", 1);
-			session.setAttribute("id", id);
-			session.setAttribute("userid", userid);
-			session.setAttribute("class", "admin");
-			session.setAttribute("adminclass", foundadmin.getAdminclass()); // 반환된 Admin에 get 써서 저장.
-		}
-		return "redirect:/Home/Main";
-	}
-*/
-	
-	@GetMapping("/admin/Logout")
-	public String Logout(HttpSession session) { // 세션사용하면 로그아웃 시 id나 userid 사용가능하니 받을 것도 없을 거고...
-		// 세션에서 userid 제거
-		session.removeAttribute("id");
-		session.removeAttribute("islogined");
-		session.removeAttribute("class");
-		session.removeAttribute("userid");
-		// 세션 무효화
-		session.invalidate();
-		return "redirect:/Home/Main";
-	}
 
 	@PostMapping("/admin/modify")
-	public String modify(HttpSession session,@RequestParam  String name,@RequestParam  String email) {
+	public String modify(HttpSession session, @RequestParam String name, @RequestParam String email) {
 
 		UUID uuid = UUID.randomUUID();
 		String newpw = uuid.toString().replace("-", "");
-		
-		adminService.modify(newpw,name, email);
+
+		adminService.modify(newpw, name, email);
 		return "product/main";
 	}
 
 	@GetMapping("/admin/Signout") // jsp쪽에서 비번 체크하도록
-	public String Sigbout(HttpSession session,@RequestParam String email) {
+	public String Sigbout(HttpSession session, @RequestParam String email) {
 		int adminid = (int) session.getAttribute("id");
-		adminService.Signout(adminid,email);
-		
+		adminService.signout(adminid, email);
+
 		return "redirect:/Home/Main";
 	}
-	
+
 	@GetMapping("/admin/logout") // jsp쪽에서 비번 체크하도록
 	public String logout(HttpSession session) {
 		// 세션에서 userid 제거
 		session.removeAttribute("id");
 		// 세션 무효화
 		session.invalidate();
-		
+
 		return "redirect:/Home/Main";
 	}
 }

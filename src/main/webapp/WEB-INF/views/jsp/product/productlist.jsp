@@ -69,6 +69,6 @@
 			
 		<button class="btn btn-active btn-sm" onclick="location.href='/Home/Main'">메인으로</button>
 	</div>
-	
+	<%@ include file="../includes/foot1.jsp"%>	
 </body>
 </html>

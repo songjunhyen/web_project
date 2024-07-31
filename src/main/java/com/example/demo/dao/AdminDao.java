@@ -12,43 +12,43 @@ import com.example.demo.vo.Admin;
 public interface AdminDao {
 
     @Insert("""
-            INSERT INTO `admin` (regDate, adminid, adminpw, `name`, email, adminclass)
-            VALUES (#{regDate}, #{adminid}, #{adminpw}, #{name}, #{email}, #{adminclass})
+            INSERT INTO `admin` (regDate, adminId, adminPw, `name`, email, adminclass)
+            VALUES (#{regDate}, #{adminId}, #{adminPw}, #{name}, #{email}, #{adminclass})
             """)
     void signup(Admin newAdmin);
 
     @Update("""
             UPDATE `admin`
-            SET `name` = #{name}, adminpw = #{newpw}
+            SET `name` = #{name}, adminPw = #{newpw}
             WHERE email = #{email}
             """)
     void modify(String newpw, String name, String email);
-
+    
     @Delete("""
             DELETE FROM `admin`
             WHERE id = #{id} AND email = #{email}
             """)
-    void signout(int id, String email); 
+    void signout(int id, String email);
 
     @Select("""
-            SELECT EXISTS(SELECT 1 FROM `admin` WHERE adminid = #{userid})
+            SELECT EXISTS(SELECT 1 FROM `admin` WHERE adminId = #{userid})
             """)
     boolean checkid(String userid);
 
     @Select("""
-            SELECT EXISTS(SELECT 1 FROM `admin` WHERE adminid = #{userid} AND adminpw = #{pw})
+            SELECT adminPw FROM `admin` WHERE adminId = #{userid}
             """)
-    boolean checkpw(String userid, String pw);
+    String getHashedPassword(String userid);
 
     @Select("""
-            SELECT id From `admin` WHERE adminid = #{adminid} AND adminpw = #{pw}
-            """)            
-    int getid(String adminid, String pw);
+            SELECT id FROM `admin` WHERE adminId = #{adminId}
+            """)
+    int getid(String adminId);
 
     @Select("""
-            SELECT * FROM `admin` WHERE id = #{adminid} AND adminid = #{userid} AND adminpw = #{pw}
+            SELECT * FROM `admin` WHERE id = #{adminid} AND adminId = #{userid}
             """)
-    Admin getadmin(int adminid, String userid, String pw);
+    Admin getadmin(int adminid, String userid);
 
     @Select("""
             SELECT * FROM `admin` WHERE email = #{email}
@@ -56,7 +56,12 @@ public interface AdminDao {
     Admin getbyemail(String email);
 
     @Select("""
-            SELECT adminclass From `admin` WHERE adminid = #{username}
-            """)      
-	int getadminclass(String username);
+            SELECT adminclass FROM `admin` WHERE adminId = #{userid}
+            """)
+    int getadminclass(String userid);
+
+    @Select("""
+            SELECT * FROM `admin` WHERE adminid = #{username}
+            """)
+	Admin findByUserid(String username);
 }

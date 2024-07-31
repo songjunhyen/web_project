@@ -25,7 +25,7 @@
                     reviewsHtml += '<div class="text-m my-1 ml-2">' + review.writer + '</div>';
                     reviewsHtml += '<div class="text-m my-1 ml-2">' + review.reviewText + '</div>';
                     reviewsHtml += '<div class="text-xs text-gray-400">' + review.regDate + '</div>';
-                    if (review.writer == '${sessionScope.userid}') {
+                    if (review.writer == '${userid}') {
                         reviewsHtml += '<div id="modifyForm">';
                         reviewsHtml += '<form action="/Review/modify" method="post" onsubmit="return confirm(\'정말 수정하시겠습니까?\');">';
                         reviewsHtml += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">';
@@ -120,7 +120,7 @@
 	
 		
 		<div>
-		    <c:if test="${empty sessionScope.islogined}">
+		   <sec:authorize access="!isAuthenticated()">
 		        <form action="/Temporarily/Cart/add" method="post">
 		            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">		        
 		            <input type="hidden" name="productid" value="${product.id}" />
@@ -142,11 +142,11 @@
 		            <input type="number" name="count" step="1" min="1" max="${product.count}" value="1" placeholder="수량 선택" />
 		            <button type="submit">카트에 담기</button>
 		        </form>
-		    </c:if>
+		    </sec:authorize>
 		</div>
 
 		<div>
-			<c:if test="${sessionScope.islogined eq 1}">
+			<sec:authorize access="isAuthenticated()">
 				<form action="/Cart/add" method="post">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">		
 					<input type="hidden" name="productid" value="${product.id}" /> <input
@@ -168,7 +168,7 @@
 					<%-- 사이즈 수량 옵션 선택할 수 있도록 변경 예정 --%>
 					<button type="submit">카트에 담기</button>
 				</form>
-			</c:if>
+			</sec:authorize>
 		</div>
 
 		<div class="mt-3">
@@ -183,7 +183,7 @@
 				<div id="reviewsContainer"></div>
 			</div>
 		</section>
-		<c:if test="${sessionScope.islogined eq 1}">
+		<sec:authorize access="isAuthenticated()">
 			<div class="mt-3">
 				<h3>리뷰 작성</h3>
 				<form action="/Review/add" method="post">
@@ -194,11 +194,11 @@
 				    <button type="submit">작성하기</button>
 				</form>
 			</div>
-		</c:if>
+		</sec:authorize>
 		<div class="mt-3 text-sm">
 			<button class="btn btn-active btn-sm"
 				onclick="location.href='/product/list';">목록으로</button>
-			<c:if test="${sessionScope.userid eq product.writer}">
+			<c:if test="${userid eq product.writer}">
 				<form action="/product/modify" method="get">
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}"> <input type="hidden" name="id"
@@ -215,6 +215,7 @@
 			</c:if>
 		</div>
 	</div>
+	<%@ include file="../includes/foot1.jsp"%>
 </body>
 </html>
 

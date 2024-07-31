@@ -15,15 +15,15 @@ public class CartService {
 		this.cartDao = cartDao;
 	}
 
-	public List<Cart> GetCartList(int userid) {
+	public List<Cart> GetCartList(String userid) {
 		return cartDao.GetCartList(userid);
 	}
 
-	public void AddCartList(int userid, int productid, String name, String color, String size, int count, int price) {
+	public void AddCartList(String userid, int productid, String name, String color, String size, int count, int price) {
 		cartDao.AddCartList(userid, productid, name, color, size, count, price);
 	}
 
-	public void ModifyCartList(int id, int userid, int productid, String productname, String a_color, String a_size,
+	public void ModifyCartList(int id, String userid, int productid, String productname, String a_color, String a_size,
 			String color, String size, int count, int price) {
 		// a_붙은게 기존값 없는게 수정된값
 		if (checking(userid, productid, a_color, a_size)) {
@@ -52,16 +52,16 @@ public class CartService {
 		}
 	}
 
-	public void DeleteCartList(int id, int userid, int productid, String color, String size) {
+	public void DeleteCartList(int id, String userid, int productid, String color, String size) {
 		cartDao.DeleteCartList(id, userid, productid, color, size);
 	}
 
-	public boolean checking(int userid, int productid, String color, String size) {
+	public boolean checking(String userid, int productid, String color, String size) {
 		int count = cartDao.checking(userid, productid, color, size);
 		return count > 0;
 	}
 
-	public int GetCartId(int userid, int productid, String productname, String color, String size) {
+	public int GetCartId(String userid, int productid, String productname, String color, String size) {
 		return cartDao.GetCartId(userid, productid, productname, color, size);
 	}
 

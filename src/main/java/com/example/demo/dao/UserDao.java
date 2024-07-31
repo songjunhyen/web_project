@@ -47,4 +47,9 @@ public interface UserDao {
 			""")
 	int getid(String userid);
 
+	@Select("""
+            SELECT COUNT(*) FROM `user` WHERE userid = #{userid}
+            """)
+	int countByUserid(String userid);
+
 }

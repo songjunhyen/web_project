@@ -93,6 +93,7 @@ $(document).ready(function() {
 });
 </script>
 </head>
+<%@ include file="../includes/head1.jsp"%>
 <body>
 <form id="addForm" action="/product/Modify" method="post">
 	
@@ -143,5 +144,6 @@ $(document).ready(function() {
         alert("${errorMessage}");
     </script>
 </c:if>
+	<%@ include file="../includes/foot1.jsp"%>
 </body>
 </html>

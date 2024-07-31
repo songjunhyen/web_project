@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.service.ProductService;
 import com.example.demo.util.ImageUtils;
+import com.example.demo.util.SecurityUtils;
 import com.example.demo.vo.Product;
 
 import jakarta.servlet.http.Cookie;
@@ -36,28 +37,7 @@ public class ProductController {
 	public ProductController(ProductService productService) {
 		this.productService = productService;
 	}
-
-	@GetMapping("/Home/Main")
-	public String mainPage(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
-
-		List<Product> products = productService.getProductlist();
-		Collections.reverse(products);
-
-		int pageSize = 10; // 한 페이지에 보여줄 게시물 수
-		int totalCount = products.size();
-		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
-		int start = (page - 1) * pageSize;
-		int end = Math.min(start + pageSize, totalCount);
-
-		List<Product> paginatedProducts = products.subList(start, end);
-
-		model.addAttribute("products", paginatedProducts);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", totalPages);
-		return "realMain"; // "product/main.jsp"를 반환하도록 설정
-
-	}
-
+	
 	@GetMapping("/test/product/Main")
 	public String mainPage() {
 		return "product/main"; // "product/main.jsp"를 반환하도록 설정
@@ -77,7 +57,7 @@ public class ProductController {
 			return "error";
 		} else {
 			String writerid = productService.getwriterid(id);
-			String userid = (String) session.getAttribute("userid");
+			String userid = SecurityUtils.getCurrentUserId();
 
 			Product product = productService.ProductDetail(id);
 
@@ -152,7 +132,7 @@ public class ProductController {
                              @RequestParam int count, @RequestParam String category, @RequestParam String maker,
                              @RequestParam String color, @RequestParam String size, @RequestParam String options) {
 
-        String userid = (String) session.getAttribute("userid");
+        String userid = SecurityUtils.getCurrentUserId();
 
         List<String> imageUrls = new ArrayList<>();
         String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploadimg/";
@@ -215,7 +195,7 @@ public class ProductController {
         }
 
         String writerid = productService.getwriterid(id);
-        String userid = (String) session.getAttribute("userid");
+        String userid = SecurityUtils.getCurrentUserId();
         Product product = productService.ProductDetail(id);
 
         if (writerid.equals(userid)) {
@@ -279,7 +259,7 @@ public class ProductController {
 			model.addAttribute("message", "제품 수정 중 오류가 발생하였습니다.");
 			return "error";
 		} else {
-			String userid = (String) session.getAttribute("userid");
+			String userid = SecurityUtils.getCurrentUserId();
 			Product product = new Product(0, userid, name, price, description, "", count, category, maker, color, size, "");
 			productService.modifyProduct(productId, product);
 			model.addAttribute("product", product);

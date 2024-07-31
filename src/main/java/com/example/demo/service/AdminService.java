@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.AdminDao;
@@ -7,50 +8,56 @@ import com.example.demo.vo.Admin;
 
 @Service
 public class AdminService {
-	private AdminDao adminDao;
-	
-	AdminService(AdminDao adminDao){
-		this.adminDao = adminDao;
-	}
+    private final AdminDao adminDao;
+    private final PasswordEncoder passwordEncoder;
 
-	public void signup(Admin newAdmin) {
-		adminDao.signup(newAdmin);
-	}
+    public AdminService(AdminDao adminDao, PasswordEncoder passwordEncoder) {
+        this.adminDao = adminDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-	public boolean checking(String userid, String pw) {
-		boolean isin = true;
-		// id로 체크
-		if (!adminDao.checkid(userid)) {
-			isin = false;
-		} else {
-			if (!adminDao.checkpw(userid,pw)) {
-				isin = false;
-			}
-		}
-		return isin;
-	}
+    public void signup(Admin newAdmin) {
+        String encodedPassword = passwordEncoder.encode(newAdmin.getAdminPw());
+        newAdmin.setAdminPw(encodedPassword);
+        adminDao.signup(newAdmin);
+    }
 
-	public int getid(String userid, String pw) {
-		return adminDao.getid(userid,pw);
-	}
+    public boolean checking(String userid, String pw) {
+        if (!adminDao.checkid(userid)) {
+            return false;
+        } else {
+            String hashedPassword = adminDao.getHashedPassword(userid);
 
-	public void modify(String newpw, String name, String email) {
-		adminDao.modify(newpw, name, email);
-	}
+            // 실제로 암호화된 비밀번호를 출력하지 말고, 디버깅이 필요하다면 다른 방법 사용
+            System.out.println("Stored hashed password: " + hashedPassword);
+            System.out.println("Entered password: " + pw);
 
-	public void Signout(int id, String email) {
-		adminDao.signout(id,email);
-	}
+            return passwordEncoder.matches(pw, hashedPassword);
+        }
+    }
 
-	public Admin getadmin(int adminid, String userid, String pw) {
-		return adminDao.getadmin(adminid, userid, pw);
-	}
+    public int getid(String userid) {
+        return adminDao.getid(userid);
+    }
 
-	public Admin getbyemail(String email) {
-		return adminDao.getbyemail(email);
-	}
+    public void modify(String newpw, String name, String email) {
+        String encodedPassword = passwordEncoder.encode(newpw);
+        adminDao.modify(encodedPassword, name, email);
+    }
 
-	public int getadminclass(String username) {
-		return adminDao.getadminclass(username);
-	}
+    public void signout(int id, String email) {
+        adminDao.signout(id, email);
+    }
+
+    public Admin getadmin(int adminid, String userid) {
+        return adminDao.getadmin(adminid, userid);
+    }
+
+    public Admin getbyemail(String email) {
+        return adminDao.getbyemail(email);
+    }
+
+    public int getadminclass(String username) {
+        return adminDao.getadminclass(username);
+    }
 }

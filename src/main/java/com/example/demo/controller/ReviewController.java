@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.ReviewService;
+import com.example.demo.util.SecurityUtils;
 import com.example.demo.vo.Review;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class ReviewController {
 	@PostMapping("/Review/add")
 	public String addReview(HttpSession session, @RequestParam int productId,
 			@RequestParam String body, @RequestParam double star) {
-		  String writer = (String) session.getAttribute("userid");
+		  String writer = SecurityUtils.getCurrentUserId();
 		  
 		reviewService.AddReview(writer, productId, body, star);
 		return "redirect:/product/detail?id=" + productId;
@@ -41,7 +42,7 @@ public class ReviewController {
 
 	@PostMapping("/Review/modify")
 	public String ReviewModify(HttpSession session, Model model, @RequestParam int productid, @RequestParam int reviewid, @RequestParam String body) {
-		String writer = (String) session.getAttribute("userid");
+		String writer = SecurityUtils.getCurrentUserId();
 		if (!reviewService.iswriter(writer)) {
 			model.addAttribute("message", "권한이 없습니다.");
 			return "redirect:/product/detail?id=" + productid;
@@ -53,7 +54,7 @@ public class ReviewController {
 
 	@PostMapping("/Review/delete")
 	public String ReviewDelete(HttpSession session, @RequestParam int productid, @RequestParam int reviewid) {
-		String writer = (String) session.getAttribute("userid");
+		String writer = SecurityUtils.getCurrentUserId();
 		if (!reviewService.iswriter(writer)) {
 			return "redirect:/product/detail?id=" + productid;
 		} else {
