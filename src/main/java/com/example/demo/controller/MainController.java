@@ -46,7 +46,7 @@ public class MainController {
 		List<Product> products = productService.getProductlist();
 		Collections.reverse(products);
 
-		int pageSize = 10; // 한 페이지에 보여줄 게시물 수
+		int pageSize = 5; // 한 페이지에 보여줄 게시물 수
 		int totalCount = products.size();
 		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 		int start = (page - 1) * pageSize;
@@ -57,6 +57,15 @@ public class MainController {
 		model.addAttribute("products", paginatedProducts);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", totalPages);
+		
+		 // 페이지네이션 계산
+	    int[] pagination = calculatePagination(page, totalPages);
+	    int startPage = pagination[0];
+	    int endPage = pagination[1];
+
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+		
 		return "realMain";
 	}
 
@@ -77,7 +86,7 @@ public class MainController {
 		List<Product> products = productService.getProductlist();
 		Collections.reverse(products);
 
-		int pageSize = 10; // 한 페이지에 보여줄 게시물 수
+		int pageSize = 5; // 한 페이지에 보여줄 게시물 수
 		int totalCount = products.size();
 		int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 		int start = (page - 1) * pageSize;
@@ -88,8 +97,46 @@ public class MainController {
 		model.addAttribute("products", paginatedProducts);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", totalPages);
+		
+		 // 페이지네이션 계산
+	    int[] pagination = calculatePagination(page, totalPages);
+	    int startPage = pagination[0];
+	    int endPage = pagination[1];
+
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+		
 		return "realMain"; // "product/main.jsp"를 반환하도록 설정
 	}
+	
+	public static int[] calculatePagination(int currentPage, int totalPages) {
+        // Null 체크 및 기본값 설정
+        if (currentPage <= 0) {
+            currentPage = 1;
+        }
+        if (totalPages <= 0) {
+            totalPages = 1;
+        }
+        int MAX_PAGES_TO_SHOW = 10;
+        int startPage, endPage;
+
+        // 페이지 수가 MAX_PAGES_TO_SHOW 이하일 때는 모든 페이지를 보여줍니다.
+        if (totalPages <= MAX_PAGES_TO_SHOW) {
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            // 시작 페이지와 끝 페이지 계산
+            startPage = Math.max(1, currentPage - MAX_PAGES_TO_SHOW / 2);
+            endPage = Math.min(totalPages, startPage + MAX_PAGES_TO_SHOW - 1);
+
+            // 페이지 범위를 조정하여 최대 MAX_PAGES_TO_SHOW 개를 초과하지 않도록 합니다.
+            if (endPage - startPage + 1 < MAX_PAGES_TO_SHOW) {
+                startPage = Math.max(1, endPage - MAX_PAGES_TO_SHOW + 1);
+            }
+        }
+
+        return new int[]{startPage, endPage};
+    }
 
 	@GetMapping("/Home/login")
 	public String Login(HttpServletRequest request, HttpServletResponse response) {
