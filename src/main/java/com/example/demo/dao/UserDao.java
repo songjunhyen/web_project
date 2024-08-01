@@ -19,9 +19,9 @@ public interface UserDao {
 	@Update("""
 			UPDATE `user`
 			SET userpw = #{pw}, `name` = #{name}, email = #{email}, address = #{address}
-			WHERE id = #{id}
+			WHERE userid = #{userid}
 			""")
-	void modify(int id, String pw, String name, String email, String address);
+	void modify(String userid, String pw, String name, String email, String address);
 
 	@Delete("""
 			DELETE FROM `user`

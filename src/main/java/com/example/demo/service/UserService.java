@@ -22,9 +22,9 @@ public class UserService {
 		userDao.signup(member);
 	}
 
-	public void modify(int id, String pw, String name, String email, String address) {
+	public void modify(String userid, String pw, String name, String email, String address) {
 		String encodedPassword = passwordEncoder.encode(pw);
-		userDao.modify(id, encodedPassword, name, email, address);
+		userDao.modify(userid, encodedPassword, name, email, address);
 	}
 
 	public void signout(int id) {
@@ -71,5 +71,13 @@ public class UserService {
 		} else {
 			return "admin";
 		}
+	}
+
+	public boolean checkon(String userid, String pw) {
+		Member member = userDao.findByUserid(userid);
+        if (member != null) {
+            return passwordEncoder.matches(pw, member.getUserpw());
+        }
+        return false;
 	}
 }

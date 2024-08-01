@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.service.AdminService;
+import com.example.demo.util.SecurityUtils;
 import com.example.demo.vo.Admin;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,7 +25,10 @@ public class AdminController {
 	}
 
 	@GetMapping("/admin/Dashboard")
-	public String Board() {
+	public String Board(Model model) {
+		String userid = SecurityUtils.getCurrentUserId();
+		Admin foundadmin = adminService.getbyuserid(userid);
+		model.addAttribute("admin", foundadmin);
 		return "admin/dashboard";
 	}
 
@@ -36,6 +40,11 @@ public class AdminController {
 	@GetMapping("/admin/Modify")
 	public String Modify() {
 		return "admin/modify";
+	}
+	
+	@GetMapping("/admin/Search")
+	public String Search() {
+		return "admin/search";
 	}
 
 	@GetMapping("/admin/searchbyemail")

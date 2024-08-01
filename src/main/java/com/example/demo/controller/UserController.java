@@ -4,9 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.form.SignUpForm;
 import com.example.demo.service.UserService;
+import com.example.demo.util.SecurityUtils;
 import com.example.demo.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,6 +43,18 @@ public class UserController {
 		return "user/check";
 	}
 
+	@PostMapping("/user/Checking")
+	public String checking(@RequestParam String pw, Model model) {
+		String userid = SecurityUtils.getCurrentUserId();
+		boolean result = userService.checkon(userid, pw);
+		String resulted = result ? "true" : "false"; // 간단한 삼항 연산자 사용
+		model.addAttribute("result", resulted);
+
+		System.out.println("Resulted value in controller: " + resulted);
+
+		return "user/modify";
+	}
+
 	@PostMapping("/user/signup")
 	public String signup(Model model, SignUpForm signupform) {
 		String userid = signupform.getUserid();
@@ -59,11 +73,12 @@ public class UserController {
 		userService.signup(newMember);
 		return "redirect:/Home/Main";
 	}
-	
+
 	@PostMapping("/user/modify")
-	public String modify(HttpSession session, String pw, String name, String email, String address) {
-		int id = (int) session.getAttribute("id");
-		userService.modify(id, pw, name, email, address);
+	public String modify(HttpSession session, @RequestParam String pw, @RequestParam String name,
+			@RequestParam String email, @RequestParam String address) {
+		String userid = SecurityUtils.getCurrentUserId();
+		userService.modify(userid, pw, name, email, address);
 		return "redirect:/Home/Main";
 	}
 

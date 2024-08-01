@@ -60,4 +60,8 @@ public class AdminService {
     public int getadminclass(String username) {
         return adminDao.getadminclass(username);
     }
+
+	public Admin getbyuserid(String userid) {
+		return adminDao.getbyuserid(userid);
+	}
 }

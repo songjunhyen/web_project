@@ -1,18 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>íšŒì› ì •ë³´ í™•ì¸</title>
+
 </head>
+<%@ include file="../includes/head1.jsp"%>
 <body>
-È¸¿ø º»ÀÎÀÌ ¸Â´ÂÁö Ã¼Å©ÇÏ°í
-ºñ¹øÃ¼Å© ºñµ¿±â·Î È®ÀÎÇÏ±â
 
-¼öÁ¤ »èÁ¦ ¹öÆ° ¸¸µé°í 
+	<h1>íšŒì› í”„ë¡œí•„</h1>
+	<p>íšŒì›ë‹˜ì˜ í”„ë¡œí•„ ì •ë³´: [ ]</p>
 
-¼öÁ¤¹öÆ° ´©¸£¸é/user/Modify
-»èÁ¦¹öÆ° ´©¸£¸é »èÁ¦¿©ºÎ ÇÑ¹ø ´õ ¹°¾îº¸°í /user/Signout
+	<h2>ë³¸ì¸ í™•ì¸</h2>
+	<p>ë¹„ë°€ë²ˆí˜¸ë¥¼ ìž…ë ¥í•˜ì—¬ ë³¸ì¸ í™•ì¸ì„ ì§„í–‰í•˜ì„¸ìš”:</p>
+	<form action="/user/Checking" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <input type="password" id="pw" name="pw" placeholder="ë¹„ë°€ë²ˆí˜¸ë¥¼ ìž…ë ¥í•˜ì„¸ìš”" required>
+        <button type="submit">í™•ì¸</button>
+    </form>
+	<br>
+	<br>
+	<br>
 </body>
+
+<%@ include file="../includes/foot1.jsp"%>
 </html>

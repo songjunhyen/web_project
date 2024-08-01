@@ -82,6 +82,12 @@
 }
 </style>
 <body id="main">
+	<br>
+	<div id="eventbanner">
+	이벤트 배너 들어갈공간 
+	</div>
+	<br>
+	
 	<div id="productContainer">
 		<table id="productTable">
 			<thead>
@@ -163,9 +169,11 @@
     </div>
 
 	<br>
-	<div id="proContainer">인기상품?</div>
+	<div id="proContainer">인기상품 들어갈 공간</div>
+	
 	<br>
 	<div id="articleContainer">
+		공지사항 등 들어갈 공강	
 		<table id="articletable">
 			<thead id="article">
 				<tr>

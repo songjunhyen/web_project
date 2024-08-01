@@ -64,4 +64,9 @@ public interface AdminDao {
             SELECT * FROM `admin` WHERE adminid = #{username}
             """)
 	Admin findByUserid(String username);
+
+    @Select("""
+            SELECT * FROM `admin` WHERE adminId = #{userid}
+            """)
+	Admin getbyuserid(String userid);
 }

@@ -111,7 +111,7 @@ body, ul, li {
 									class="logout-button" />
 							</form>
 						</li>
-						<li><a href="/user/Modify">Modify</a></li>
+						<li><a href="/user/Check">Modify</a></li>
 						<li><a href="/Cart/List">Cart</a></li>
 					</c:when>
 					<c:when test="${userRole == 'admin'}">
@@ -126,7 +126,6 @@ body, ul, li {
 						<li><a href="/product/add">Registration</a></li>
 						<c:if test="${adminClass == 1}">
 							<li><a href="/admin/Dashboard">Dashboard</a></li>
-							<li><a href="/admin/Modify">Modify</a></li>
 						</c:if>
 					</c:when>
 				</c:choose>
