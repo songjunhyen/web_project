@@ -1,10 +1,15 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.form.SignUpForm;
 import com.example.demo.service.UserService;
@@ -91,6 +96,44 @@ public class UserController {
 		// 세션 무효화
 		session.invalidate();
 		return "redirect:/Home/Main";
+	}
+	
+	@RequestMapping("/user/checkId.do")
+	@ResponseBody
+	public Map<Object, Object> checkId(@RequestParam String userid) {
+		int id = userService.getid2(userid);
+        //getMemberId는 id로 멤버의 dto를 꺼내오는 메소드
+        
+		Map<Object, Object> map = new HashMap<>();
+
+		// 아이디가 존재하지 않으면
+		if(id == 0) {
+			map.put("cnt", 0);
+		// 아이디가 존재하면
+		}else {
+			map.put("cnt", 1);
+		}
+		
+		return map;
+	}
+	
+	@RequestMapping("/user/checkEmail.do")
+	@ResponseBody
+	public Map<Object, Object> checkEmail(@RequestParam String email) {
+		int id = userService.getid3(email);
+        //getMemberId는 id로 멤버의 dto를 꺼내오는 메소드
+        
+		Map<Object, Object> map = new HashMap<>();
+
+		// 아이디가 존재하지 않으면
+		if(id == 0) {
+			map.put("cnt", 0);
+		// 아이디가 존재하면
+		}else {
+			map.put("cnt", 1);
+		}
+		
+		return map;
 	}
 
 }

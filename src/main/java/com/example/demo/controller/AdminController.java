@@ -2,13 +2,18 @@ package com.example.demo.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.service.AdminService;
 import com.example.demo.util.SecurityUtils;
@@ -36,12 +41,17 @@ public class AdminController {
 	public String signUP() {
 		return "admin/signup";
 	}
+	
+	@GetMapping("/admin/Signupreport")
+	public String signUPre() {
+		return "admin/signupreport";
+	}
 
 	@GetMapping("/admin/Modify")
 	public String Modify() {
 		return "admin/modify";
 	}
-	
+
 	@GetMapping("/admin/Search")
 	public String Search() {
 		return "admin/search";
@@ -55,7 +65,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/admin/signup")
-	public String signup(@RequestParam String name, @RequestParam String email, @RequestParam int adminclass) {
+	public String signup(@RequestParam String name, @RequestParam String email, @RequestParam int adminclass, RedirectAttributes redirectAttributes) {
 		LocalDateTime currentTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 		String formattedDateTime = currentTime.format(formatter);
@@ -66,7 +76,8 @@ public class AdminController {
 
 		Admin newAdmin = new Admin(adminid, adminpw, name, email);
 		adminService.signup(newAdmin);
-		return "admin/singupreport"; // 이 jsp파일에서 가입시 생성한 id, pw 보여주고 그걸로 사용
+		redirectAttributes.addFlashAttribute("admin", newAdmin);
+		return "redirect:/admin/Signupreport";
 	}
 
 	@PostMapping("/admin/modify")
@@ -96,4 +107,24 @@ public class AdminController {
 
 		return "redirect:/Home/Main";
 	}
+		
+	@RequestMapping("/admin/checkEmail.do")
+	@ResponseBody
+	public Map<Object, Object> checkEmail(@RequestParam String email) {
+		int id = adminService.getid3(email);
+        //getMemberId는 id로 멤버의 dto를 꺼내오는 메소드
+        
+		Map<Object, Object> map = new HashMap<>();
+
+		// 아이디가 존재하지 않으면
+		if(id == 0) {
+			map.put("cnt", 0);
+		// 아이디가 존재하면
+		}else {
+			map.put("cnt", 1);
+		}
+		
+		return map;
+	}
+	
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.service.AllService;
 import com.example.demo.service.ProductService;
 import com.example.demo.util.ImageUtils;
 import com.example.demo.util.SecurityUtils;
@@ -33,9 +34,11 @@ import jakarta.servlet.http.HttpSession;
 public class ProductController {
 
 	private final ProductService productService;
+	private final AllService allService;
 
-	public ProductController(ProductService productService) {
+	public ProductController(ProductService productService, AllService allService) {
 		this.productService = productService;
+		this.allService =  allService;
 	}
 	
 	@GetMapping("/test/product/Main")
@@ -50,14 +53,26 @@ public class ProductController {
 
 	@GetMapping("/product/detail")
 	public String detail(HttpSession session, @RequestParam int id, Model model, HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) {		
 		boolean result = productService.searchProduct(id);
+		
+		String userid = SecurityUtils.getCurrentUserId();
+		String userRole = "";
+		int adminClass = 5;
+		if (userid != null && !userid.equals("Anonymous")) {
+			userRole = allService.isuser(userid);
+			if (userRole.equals("admin")) {
+				adminClass = allService.getadminclass(userid);
+			}
+			model.addAttribute("userRole", userRole);
+			model.addAttribute("adminClass", adminClass);
+		}
+		
 		if (!result) {
 			model.addAttribute("message", "오류가 발생하였습니다.");
 			return "error";
 		} else {
 			String writerid = productService.getwriterid(id);
-			String userid = SecurityUtils.getCurrentUserId();
 
 			Product product = productService.ProductDetail(id);
 
@@ -96,6 +111,7 @@ public class ProductController {
 					// 조회수 증가
 					productService.updateViewCount(id);
 				}
+								
 				model.addAttribute("product", product);
 				return "product/productdetail";
 			}
@@ -200,11 +216,23 @@ public class ProductController {
 
         if (writerid.equals(userid)) {
             model.addAttribute("product", product);
+            model.addAttribute("userid", userid);
             return "product/productdetail";
         }
 
         handleViewCountCookie(request, response, id);
-
+        
+		String userRole = "";
+		int adminClass = 5;
+		if (userid != null && !userid.equals("Anonymous")) {
+			userRole = allService.isuser(userid);
+			if (userRole.equals("admin")) {
+				adminClass = allService.getadminclass(userid);
+			}
+			model.addAttribute("userRole", userRole);
+			model.addAttribute("adminClass", adminClass);
+		}
+		
         model.addAttribute("product", product);
         return "product/productdetail";
     }

@@ -176,8 +176,6 @@ public class MainController {
 		}
 		return "redirect:/Home/Main";
 	}
-	
-
 	/*
 	 * @PostMapping("/Home/Login") public String login(HttpSession session, Model
 	 * model) {

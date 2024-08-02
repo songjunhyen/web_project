@@ -10,10 +10,13 @@
 <head>
 <meta charset="UTF-8">
 <title>제품 상세보기</title>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
-    $(document).ready(function(){
+
+    $(document).ready(function(){    	
         loadReviews();
         loadAverageStar();
 
@@ -117,41 +120,39 @@
 				</tr>
 			</tbody>
 		</table>
-	
-		
+
 		<div>
-		   <sec:authorize access="!isAuthenticated()">
-		        <form action="/Temporarily/Cart/add" method="post">
-		            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">		        
-		            <input type="hidden" name="productid" value="${product.id}" />
-		            <input type="hidden" name="name" value="${product.name}" />
-		            <select name="size">
-		                <option value="xs">XS</option>
-		                <option value="s">S</option>
-		                <option value="m">M</option>
-		                <option value="l">L</option>
-		                <option value="xl">XL</option>
-		            </select>
-		            <select name="color">
-		                <option value="Red">Red</option>
-		                <option value="Black">Black</option>
-		                <option value="White">White</option>
-		                <option value="Blue">Blue</option>
-		            </select>
-		            <input type="hidden" name="price" value="${product.price}" />
-		            <input type="number" name="count" step="1" min="1" max="${product.count}" value="1" placeholder="수량 선택" />
-		            <button type="submit">카트에 담기</button>
-		        </form>
-		    </sec:authorize>
+			<sec:authorize access="!isAuthenticated()">
+				<form action="/Temporarily/Cart/add" method="post">
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}"> <input type="hidden"
+						name="productid" value="${product.id}" /> <input type="hidden"
+						name="name" value="${product.name}" /> <select name="size">
+						<option value="xs">XS</option>
+						<option value="s">S</option>
+						<option value="m">M</option>
+						<option value="l">L</option>
+						<option value="xl">XL</option>
+					</select> <select name="color">
+						<option value="Red">Red</option>
+						<option value="Black">Black</option>
+						<option value="White">White</option>
+						<option value="Blue">Blue</option>
+					</select> <input type="hidden" name="price" value="${product.price}" /> <input
+						type="number" name="count" step="1" min="1" max="${product.count}"
+						value="1" placeholder="수량 선택" />
+					<button type="submit">카트에 담기</button>
+				</form>
+			</sec:authorize>
 		</div>
 
 		<div>
 			<sec:authorize access="isAuthenticated()">
 				<form action="/Cart/add" method="post">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">		
-					<input type="hidden" name="productid" value="${product.id}" /> <input
-						type="hidden" name="name" value="${product.name}" /> <select
-						name="size">
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}"> <input type="hidden"
+						name="productid" value="${product.id}" /> <input type="hidden"
+						name="name" value="${product.name}" /> <select name="size">
 						<option value="xs">XS</option>
 						<option value="s">S</option>
 						<option value="m">M</option>
@@ -187,29 +188,53 @@
 			<div class="mt-3">
 				<h3>리뷰 작성</h3>
 				<form action="/Review/add" method="post">
-				    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-				    <input type="hidden" name="productId" value="${product.id}" />
-				    <textarea name="body" placeholder="리뷰를 입력하세요"></textarea>
-				    <input type="number" name="star" step="0.5" min="0" max="5" placeholder="별점 (0.0 - 5.0)" />
-				    <button type="submit">작성하기</button>
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}"> <input type="hidden"
+						name="productId" value="${product.id}" />
+					<textarea name="body" placeholder="리뷰를 입력하세요"></textarea>
+					<input type="number" name="star" step="0.5" min="0" max="5"
+						placeholder="별점 (0.0 - 5.0)" />
+					<button id="addreview" type="submit">작성하기</button>
 				</form>
 			</div>
 		</sec:authorize>
 		<div class="mt-3 text-sm">
 			<button class="btn btn-active btn-sm"
 				onclick="location.href='/product/list';">목록으로</button>
+
+			<sec:authorize access="isAuthenticated()">
+			<c:if test="${userRole == 'admin'}">
+				<c:if test="${adminClass == 1}">
+					<!-- 관리자이고 adminClass가 1일 때 -->
+					<form action="/product/modify" method="get">
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}"> <input type="hidden" name="id"
+							value="${product.id}">
+						<button id="modifyreview" type="submit">수정</button>
+					</form>
+					<form action="/product/delete" method="post">
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}"> <input type="hidden" name="id"
+							value="${product.id}">
+						<button id="deletereview"
+							onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</button>
+					</form>
+				</c:if>
+			</c:if>
+			</sec:authorize>
+
 			<c:if test="${userid eq product.writer}">
 				<form action="/product/modify" method="get">
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}"> <input type="hidden" name="id"
 						value="${product.id}">
-					<button type="submit">수정</button>
+					<button id="modifyreview" type="submit">수정</button>
 				</form>
 				<form action="/product/delete" method="post">
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}"> <input type="hidden" name="id"
 						value="${product.id}">
-					<button
+					<button id="deletereview"
 						onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;">삭제</button>
 				</form>
 			</c:if>

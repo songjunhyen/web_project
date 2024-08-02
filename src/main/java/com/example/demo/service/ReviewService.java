@@ -32,7 +32,11 @@ public class ReviewService {
 	}
 
 	public double GetAverStar(int productid) {
-		return reviewDao.GetAverStar(productid);
+		Double star = reviewDao.GetAverStar(productid);
+		if(star == null) {
+			star = 0.0;
+		}
+		return star;
 	}
 
 	public boolean iswriter(String writer) {

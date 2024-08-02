@@ -66,7 +66,8 @@ public class ReviewController {
 	@GetMapping("/Review/getstar")
 	@ResponseBody
 	public ResponseEntity<Double> GetAverStar(@RequestParam int productid) {
-	    double averageStar = reviewService.GetAverStar(productid);
+		double averageStar = reviewService.GetAverStar(productid);
+
 	    return ResponseEntity.ok().body(averageStar);
 	}
 }

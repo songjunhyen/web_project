@@ -52,4 +52,7 @@ public interface UserDao {
             """)
 	int countByUserid(String userid);
 
+	@Select("SELECT * FROM `user` WHERE email = #{email}")
+	Member findByUserEmail(String email);
+
 }

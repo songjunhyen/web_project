@@ -15,8 +15,18 @@
     display: none;
 }
 </style>
+
+    <meta name="_csrf" content="${_csrf.token}">
+    <meta name="_csrf_header" content="${_csrf.headerName}">
+
 <script>
+var csrfToken;
+var csrfHeader;
+
     $(document).ready(function() {
+        csrfToken = $('meta[name="_csrf"]').attr('content');
+        csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+
         function validateForm() {
             var isUseridValid = checkUserid();
             var isPasswordValid = checkPassword();
@@ -111,6 +121,7 @@
         }
 
         function checkUserid() {
+        	let status = $('#userid').attr('status');
             var id = $("#userid").val();
             var specialCharPattern = /[^a-zA-Z0-9]/;
 
@@ -127,11 +138,11 @@
             if (id.includes(" ")) {
                 showError("useridError", "아이디에 공백을 사용할 수 없습니다.");
                 return false;
-            }
+            }      
 
             hideError("useridError");
             return true;
-        }
+        }    	
 
         function checkEmail() {
             var email = $("#email").val().trim();
@@ -146,7 +157,7 @@
                 showError("emailError", "유효한 이메일 주소가 아닙니다.");
                 return false;
             }
-
+	
             hideError("emailError");
             return true;
         }
@@ -176,6 +187,8 @@
         <br>
         <input type="text" id="userid" name="userid" placeholder="아이디를 입력해주세요">
         <br>
+        <button id="checkUseridButton" type="button">중복확인</button>
+        <br>
         <div id="useridError" class="error-message"></div>
         <br>
 
@@ -203,6 +216,8 @@
         <label for="email">이메일:</label>
         <br>
         <input type="text" id="email" name="email" placeholder="이메일을 입력해주세요">
+        <br>
+        <button id="checkUseridButton2" type="button">중복확인</button>
         <br>
         <div id="emailError" class="error-message"></div>
         <br>
@@ -272,6 +287,105 @@
 
         $("#address").val(fullAddress); // 통합된 주소를 `address` 필드에 설정
     }
+    
+    function checkUseridap() {            
+        var userid = $("#userid").val().trim();
+
+        $.ajax({
+            url: 'checkId.do',
+            type: 'POST',
+            data: {
+                userid: userid
+            },
+            beforeSend: function(xhr) {
+                // CSRF 토큰을 헤더에 추가
+                if (csrfToken && csrfHeader) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            },
+            success: function(data) {
+                // 아이디가 존재한다면
+               var $message = $('#userid').next('.checkIdSpan');
+            
+	            if (data.cnt > 0) {
+	                $('#userid').attr('status', 'no');
+	                if ($message.length) {
+	                    // 메시지가 이미 존재하면 업데이트
+	                    $message.text('이미 존재하는 아이디입니다.').css('color', 'red');
+	                } else {
+	                    // 메시지가 존재하지 않으면 새로 추가
+	                    $('#userid').after("<span class='checkIdSpan' style='color:red'>이미 존재하는 아이디입니다.</span>");
+	                }
+	            } else {
+	                $('#userid').attr('status', 'yes');
+	                if ($message.length) {
+	                    // 메시지가 이미 존재하면 업데이트
+	                    $message.text('사용 가능한 아이디입니다.').css('color', 'blue');
+	                } else {
+	                    // 메시지가 존재하지 않으면 새로 추가
+	                    $('#userid').after("<span class='checkIdSpan' style='color:blue'>사용 가능한 아이디입니다.</span>");
+	                }
+	            }
+            },
+            error: function(e) {
+                alert("아이디 중복 확인 중 오류가 발생했습니다.");
+            }
+        });
+    }
+    
+    function checkEmailap() {            
+        var email = $("#email").val().trim();
+
+        $.ajax({
+            url: 'checkEmail.do',
+            type: 'POST',
+            data: {
+               email: email
+            },
+            beforeSend: function(xhr) {
+                // CSRF 토큰을 헤더에 추가
+                if (csrfToken && csrfHeader) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                }
+            },
+            success: function(data) {
+                // 아이디가 존재한다면
+               var $message = $('#email').next('.checkEmailSpan');
+            
+	            if (data.cnt > 0) {
+	                $('#email').attr('status', 'no');
+	                if ($message.length) {
+	                    // 메시지가 이미 존재하면 업데이트
+	                    $message.text('이미 등록된 이메일입니다.').css('color', 'red');
+	                } else {
+	                    // 메시지가 존재하지 않으면 새로 추가
+	                    $('#email').after("<span class='checkEmailSpan' style='color:red'>이미 존재하는 아이디입니다.</span>");
+	                }
+	            } else {
+	                $('#email').attr('status', 'yes');
+	                if ($message.length) {
+	                    // 메시지가 이미 존재하면 업데이트
+	                    $message.text('사용 가능한 이메일입니다.').css('color', 'blue');
+	                } else {
+	                    // 메시지가 존재하지 않으면 새로 추가
+	                    $('#email').after("<span class='checkEmailSpan' style='color:blue'>사용 가능한 아이디입니다.</span>");
+	                }
+	            }
+            },
+            error: function(e) {
+                alert("아이디 중복 확인 중 오류가 발생했습니다.");
+            }
+        });
+    }
+    
+	$("#checkUseridButton").click(function() {
+        checkUseridap();
+    });
+	
+	$("#checkUseridButton2").click(function() {
+        checkEmailap();
+    });
+    
 </script>
     <%@ include file="../includes/foot1.jsp"%>
 </body>

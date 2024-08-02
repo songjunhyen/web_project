@@ -99,7 +99,7 @@
     <p>클래스에 따라 관리자 추가, 변경, 제거 기능:</p>    
     <p>모든 사용자/관리자 계정 추가, 삭제, 수정.</p>
     <ul>
-        <li><a href="/admin/Signup" class="button">Add</a> (1)</li>
+        <li><a href="/admin/Signup" class="button">Add</a> </li>
         <li><a href="/admin/Modify" class="button">Modify</a> (2)</li>
         <li><a href="/admin/Signout" class="button">Delete</a> (3)</li>
     </ul>

@@ -40,7 +40,7 @@ public interface ReviewDao {
 	@Select("""
 			    SELECT AVG(star) FROM review WHERE productid = #{productid}
 			""")
-	double GetAverStar(int productid);
+	Double GetAverStar(int productid);
 
 	@Select("""
 			    SELECT COUNT(*) > 0 FROM review WHERE writer = #{writer}

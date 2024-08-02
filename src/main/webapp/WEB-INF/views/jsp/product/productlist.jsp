@@ -12,10 +12,11 @@
 </head>
 <%@ include file="../includes/head1.jsp"%>
 <body>
-	<div class="table-box-type">
-		<table>
+	<div id="productContainer">
+		<table id="productTable">
 			<thead>
 				<tr>
+					<th></th>
 					<th>번호</th>
 					<th>카테고리</th>
 					<th>제품명</th>
@@ -25,25 +26,39 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="products" items="${products}">
+				<c:forEach var="product" items="${products}">
 					<tr>
-						<td>${products.id}</td>
-						<td>${products.category}</td>
+						<td>
+							<h3>제품 이미지</h3> <c:if test="${not empty product.imageUrl}">
+								<c:set var="imageUrls"
+									value="${fn:split(product.imageUrl, ',')}" />
+								<c:if test="${fn:length(imageUrls) > 0}">
+									<img src="${imageUrls[0]}" alt="Product Image"
+										style="max-width: 300px;" />
+								</c:if>
+							</c:if> <c:if test="${empty product.imageUrl}">
+								<p>이미지가 없습니다.</p>
+							</c:if>
+						</td>
+						<td>${product.id}</td>
+						<td>${product.category}</td>
 						<td>
 							<form action="/product/Detail" method="post">
-								<input type="hidden" name="id" value="${products.id}">
-								<button type="submit">${products.name}</button>
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}"> <input type="hidden" name="id"
+									value="${product.id}">
+								<button type="submit">${product.name}</button>
 							</form>
 						</td>
-						<td>${products.price}</td>
-						<td>${products.viewcount}</td>
-						<td>${products.regDate}</td>
+						<td>${product.price}</td>
+						<td>${product.viewcount}</td>
+						<td>${product.regDate}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
-		</table>	
-			<%-- 페이징 버튼 --%>
-	<div>
+		</table>
+	</div>
+	
 	    <%-- 이전 페이지 --%>
 	    <c:if test="${currentPage > 1}">
 	        <a href="?page=${currentPage - 1}">이전</a>

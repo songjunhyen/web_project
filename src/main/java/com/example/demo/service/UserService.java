@@ -62,6 +62,9 @@ public class UserService {
 
 	public int getid2(String userid) {
 		Member usr = userDao.findByUserid(userid);
+		if(usr == null) {
+			return 0;
+		}
 		return usr.getId();
 	}
 
@@ -79,5 +82,13 @@ public class UserService {
             return passwordEncoder.matches(pw, member.getUserpw());
         }
         return false;
+	}
+
+	public int getid3(String email) {
+		Member usr = userDao.findByUserEmail(email);
+		if(usr == null) {
+			return 0;
+		}
+		return usr.getId();
 	}
 }
