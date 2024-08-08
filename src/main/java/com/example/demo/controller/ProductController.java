@@ -50,7 +50,7 @@ public class ProductController {
 	public String write() {
 		return "product/productadd"; // "product/productadd.jsp"를 반환하도록 설정
 	}
-
+/*
 	@GetMapping("/product/detail")
 	public String detail(HttpSession session, @RequestParam int id, Model model, HttpServletRequest request,
 			HttpServletResponse response) {		
@@ -117,7 +117,7 @@ public class ProductController {
 			}
 		}
 	}
-
+*/	
 	@GetMapping("/product/list")
 	public String list(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
 		List<Product> products = productService.getProductlist();
@@ -218,7 +218,7 @@ public class ProductController {
             model.addAttribute("product", product);
             model.addAttribute("userid", userid);
             return "product/productdetail";
-        }
+        } 
 
         handleViewCountCookie(request, response, id);
         

@@ -11,8 +11,17 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<%-- 사용자 이메일 세션 속성 가져오기 --%>
+<%
+    String customuser = (String) session.getAttribute("googleuser");
+%>	
+	
+<meta name="csrf-header" content="${_csrf.headerName}">
+<meta name="csrf-token" content="${_csrf.token}">
+	
 <script>
-	$(document).ready(function() {
+	$(document).ready(function() {	
 		var csrfHeader = $('meta[name="csrf-header"]').attr('content');
 		var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -21,7 +30,14 @@
 				xhr.setRequestHeader(csrfHeader, csrfToken);
 			}
 		});
-	});
+	});	
+	
+	// 세션에서 가져온 값을 자바스크립트 변수로 설정
+	var customUser = '<%= customuser != null ? customuser : "" %>';
+	
+	// 콘솔에 출력
+	console.log("Custom User:", customUser);
+	
 </script>
 <style>
 body, ul, li {
@@ -99,9 +115,18 @@ body, ul, li {
 <header>
 	<nav class="top-bar">
 		<ul>
-			<li><a href="/Home/Main">Home</a></li>
+			<li><a href="/">Home</a></li>
 			<sec:authorize access="isAuthenticated()">
 				<c:choose>
+					<c:when test="${customuser != null}">
+						<li>
+							<form id="logoutForm" action="/Home/logout" method="post" style="display: inline;">
+							    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							    <input type="submit" value="Logout" class="logout-button" />
+							</form>
+						</li>
+						<li><a href="/Cart/List">Cart</a></li>
+					</c:when>
 					 <c:when test="${userRole == 'user'}">
 						<li>
 							<form id="logoutForm" action="/Home/logout" method="post"

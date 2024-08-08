@@ -52,6 +52,12 @@ public class AdminController {
 		return "admin/modify";
 	}
 
+	@GetMapping("/admin/Modify1")
+	public String Modif1() {
+		return "admin/Adminmodify";
+	}
+
+
 	@GetMapping("/admin/Search")
 	public String Search() {
 		return "admin/search";
@@ -89,6 +95,7 @@ public class AdminController {
 		adminService.modify(newpw, name, email);
 		return "product/main";
 	}
+	
 
 	@GetMapping("/admin/Signout") // jsp쪽에서 비번 체크하도록
 	public String Sigbout(HttpSession session, @RequestParam String email) {
@@ -121,6 +128,26 @@ public class AdminController {
 			map.put("cnt", 0);
 		// 아이디가 존재하면
 		}else {
+			map.put("cnt", 1);
+		}
+		
+		return map;
+	}
+	
+	@RequestMapping("/admin/checkName.do")
+	@ResponseBody
+	public Map<Object, Object> checkName(@RequestParam String name) {
+		int id = adminService.getid4(name);
+        //getMemberId는 id로 멤버의 dto를 꺼내오는 메소드
+        
+		Map<Object, Object> map = new HashMap<>();
+
+		// 아이디가 존재하지 않으면
+		if(id == 0) {
+			map.put("cnt", 0);
+		// 아이디가 존재하면
+		}else {
+			Admin foundadmin = adminService.getbyname(name);
 			map.put("cnt", 1);
 		}
 		

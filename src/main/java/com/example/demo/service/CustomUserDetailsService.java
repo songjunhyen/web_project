@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.config.CustomUserDetails;
 import com.example.demo.dao.AdminDao;
 import com.example.demo.dao.UserDao;
 import com.example.demo.vo.Admin;
@@ -20,32 +21,38 @@ import jakarta.servlet.http.HttpSession;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-	@Autowired
-	private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
-	@Autowired
-	private AdminDao adminDao;
+    @Autowired
+    private AdminDao adminDao;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 기존 사용자 정보 로드 로직
+        Member member = userDao.findByUserid(username);
+        if (member != null) {
+            return new org.springframework.security.core.userdetails.User(member.getUserid(), member.getUserpw(), new ArrayList<>());
+        }
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// 관리자 검색
-		Admin admin = adminDao.findByUserid(username);
-		if (admin != null) {
-			// 관리자 정보를 반환
-			return new User(admin.getAdminId(), admin.getAdminPw(), new ArrayList<>());
-		}
+        // Google 이메일로 사용자 검색
+        Member googleUser = userDao.findByUserEmail(username);
+        if (googleUser != null) {
+            return new org.springframework.security.core.userdetails.User(googleUser.getUserid(), googleUser.getUserpw(), new ArrayList<>());
+        }
 
-		// 사용자 검색
-		Member member = userDao.findByUserid(username);
-		if (member != null) {
-			// 사용자 정보를 반환
-			return new User(member.getUserid(), member.getUserpw(), new ArrayList<>());
-		}
+        throw new UsernameNotFoundException("User not found");
+    }
 
-		throw new UsernameNotFoundException("User not found");
-	}	
-	
-}
+    public UserDetails loadUserByGoogle(String email) throws UsernameNotFoundException {
+        // 이메일 기반으로 사용자 검색
+        Member member = userDao.findByUserEmail(email);
+        if (member != null) {
+            return new org.springframework.security.core.userdetails.User(member.getUserid(), member.getUserpw(), new ArrayList<>());
+        }
+
+        throw new UsernameNotFoundException("User not found");
+    }
+    
+    
+}	

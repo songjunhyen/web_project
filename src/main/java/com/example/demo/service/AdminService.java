@@ -65,6 +65,10 @@ public class AdminService {
 		return adminDao.getbyuserid(userid);
 	}
 
+	public Admin getbyname(String name) {
+		return adminDao.getbyname(name);
+	}
+	
 	public int getid2(String userid) {
 		Admin usr = adminDao.findByUserid(userid);
 		if(usr == null) {
@@ -75,6 +79,14 @@ public class AdminService {
 	
 	public int getid3(String email) {
 		Admin usr = adminDao.getbyemail(email);
+		if(usr == null) {
+			return 0;
+		}
+		return usr.getId();
+	}
+
+	public int getid4(String name) {
+		Admin usr = adminDao.getbyname(name);
 		if(usr == null) {
 			return 0;
 		}

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Cart {
 	private int id;
-	private int userid;
+	private String userid;
 	private int productid;	
 	private String productname;
 	private String color; // 가격에 영향을 주는 기타 옵션들
@@ -14,7 +14,7 @@ public class Cart {
 	private int price;
 	private int priceall;
 
-	public Cart(int id, int userid, int productid, String productname, String color, String size, int count, int price, int priceall) {
+	public Cart(int id, String userid, int productid, String productname, String color, String size, int count, int price, int priceall) {
 		this.id = id;
 		this.userid = userid;
 		this.productid = productid;

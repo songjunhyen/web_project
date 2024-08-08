@@ -108,7 +108,7 @@
 							<h3>제품 이미지</h3> <c:if test="${not empty product.imageUrl}">
 								<c:set var="imageUrls"
 									value="${fn:split(product.imageUrl, ',')}" />
-								<c:if test="${fn:length(imageUrls) > 0}">
+								<c:if test="${fn:length(imageUrls) > 0}">	
 									<img src="${imageUrls[0]}" alt="Product Image"
 										style="max-width: 300px;" />
 								</c:if>

@@ -24,5 +24,10 @@ public class Member {
     this.email = email;
     this.address = address;
   }
+  
+  public Member() {
+	  
+  }
+
 }
 

@@ -11,7 +11,7 @@ public class UserService {
 	private final UserDao userDao;
 	private final PasswordEncoder passwordEncoder;
 
-	UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
+	public UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
 		this.passwordEncoder = passwordEncoder;
 	}
@@ -91,4 +91,5 @@ public class UserService {
 		}
 		return usr.getId();
 	}
+
 }

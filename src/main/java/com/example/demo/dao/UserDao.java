@@ -55,4 +55,15 @@ public interface UserDao {
 	@Select("SELECT * FROM `user` WHERE email = #{email}")
 	Member findByUserEmail(String email);
 
+	@Insert("""
+		    INSERT INTO `user` (regDate, userid, userpw, `name`, email, class, address)
+		    VALUES (#{regdate}, #{userid}, #{userpw}, #{name}, #{email}, #{memberClass}, #{address})
+		    ON DUPLICATE KEY UPDATE
+		    userpw = VALUES(userpw),
+		    `name` = VALUES(`name`),
+		    email = VALUES(email),
+		    address = VALUES(address)
+		    """)
+	void save(Member member);
+
 }
