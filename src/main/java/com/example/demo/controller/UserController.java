@@ -168,4 +168,5 @@ public class UserController {
 	        model.addAttribute("message", "비밀번호가 초기화되었습니다.");
 	        return "user/usersearch";
 	    }
+	 
 }
