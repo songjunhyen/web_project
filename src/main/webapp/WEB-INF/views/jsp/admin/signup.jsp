@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -142,7 +142,7 @@ function checkEmailap() {
             }
         },
         success: function(data) {
-            // 아이디가 존재한다면
+            // 존재한다면
            var $message = $('#email').next('.checkEmailSpan');
         
             if (data.cnt > 0) {
@@ -152,7 +152,7 @@ function checkEmailap() {
                     $message.text('이미 등록된 이메일입니다.').css('color', 'red');
                 } else {
                     // 메시지가 존재하지 않으면 새로 추가
-                    $('#email').after("<span class='checkEmailSpan' style='color:red'>이미 존재하는 아이디입니다.</span>");
+                    $('#email').after("<span class='checkEmailSpan' style='color:red'>이미 존재하는 이메일입니다.</span>");
                 }
             } else {
                 $('#email').attr('status', 'yes');
@@ -161,7 +161,7 @@ function checkEmailap() {
                     $message.text('사용 가능한 이메일입니다.').css('color', 'blue');
                 } else {
                     // 메시지가 존재하지 않으면 새로 추가
-                    $('#email').after("<span class='checkEmailSpan' style='color:blue'>사용 가능한 아이디입니다.</span>");
+                    $('#email').after("<span class='checkEmailSpan' style='color:blue'>사용 가능한 이메일입니다.</span>");
                 }
             }
         },

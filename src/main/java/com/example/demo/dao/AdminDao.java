@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -73,6 +75,23 @@ public interface AdminDao {
     @Select("""
             SELECT * FROM `admin` WHERE name = #{name}
             """)
-	Admin getbyname(String name);   
+	Admin getbyname(String name);
+
+    @Select("""
+            SELECT * FROM `admin`
+            WHERE 
+                (#{adminclass} IS NULL OR adminclass = #{adminclass})
+                AND (#{name} IS NULL OR name LIKE CONCAT('%', #{name}, '%'))
+                AND (#{email} IS NULL OR email LIKE CONCAT('%', #{email}, '%'))
+            """)
+    List<Admin> searcAL(String adminclass, String name, String email);
+
+	@Update("""
+	        UPDATE `admin`
+		    SET adminid = #{newId},
+		        adminpw = #{encodedPassword}
+		    WHERE adminid = #{adminId}
+			""")	
+	void resetPassword(String adminId, String newId, String encodedPassword);  
 
 }

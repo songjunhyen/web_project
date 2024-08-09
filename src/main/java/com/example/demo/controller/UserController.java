@@ -1,19 +1,23 @@
 package com.example.demo.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.form.SignUpForm;
 import com.example.demo.service.UserService;
 import com.example.demo.util.SecurityUtils;
+import com.example.demo.vo.Admin;
 import com.example.demo.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -35,6 +39,10 @@ public class UserController {
 	public String signUP(Model model) {
 		model.addAttribute("SignUpForm", new SignUpForm());
 		return "user/signup";
+	}
+	@GetMapping("/user/Search")
+	public String Search() {
+		return "user/usersearch";
 	}
 
 	@GetMapping("/user/Modify")
@@ -136,4 +144,28 @@ public class UserController {
 		return map;
 	}
 
+	@RequestMapping(value = "/user/Searching", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Member> searchUsers(@RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+		// 빈값 처리
+		if (name == null || name.isEmpty()) {
+			name = null; // name이 빈 문자열일 경우 null로 처리
+		}
+		if (email == null || email.isEmpty()) {
+			email = null; // email이 빈 문자열일 경우 null로 처리
+		}
+
+		// 검색 로직을 구현합니다.
+		List<Member> users = userService.searchUser(name, email);
+		return users;	
+	}
+	
+	 @PostMapping("/user/resetPassword")
+	    public String resetPassword(@RequestParam String userid, Model model) {
+	        // 비밀번호 초기화
+	        String newPassword = UUID.randomUUID().toString().replace("-", "");
+	        userService.resetPassword(userid, newPassword);
+	        model.addAttribute("message", "비밀번호가 초기화되었습니다.");
+	        return "user/usersearch";
+	    }
 }

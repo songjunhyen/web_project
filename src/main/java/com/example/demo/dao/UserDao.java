@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,9 +30,9 @@ public interface UserDao {
 			WHERE id = #{id}
 			""")
 	void signout(int id);
-	
+
 	@Select("SELECT * FROM `user` WHERE userid = #{userid}")
-    Member findByUserid(String userid);
+	Member findByUserid(String userid);
 
 	@Select("""
 			SELECT COUNT(*) FROM `user` WHERE userid = #{userid}
@@ -48,22 +50,36 @@ public interface UserDao {
 	int getid(String userid);
 
 	@Select("""
-            SELECT COUNT(*) FROM `user` WHERE userid = #{userid}
-            """)
+			SELECT COUNT(*) FROM `user` WHERE userid = #{userid}
+			""")
 	int countByUserid(String userid);
 
 	@Select("SELECT * FROM `user` WHERE email = #{email}")
 	Member findByUserEmail(String email);
 
 	@Insert("""
-		    INSERT INTO `user` (regDate, userid, userpw, `name`, email, class, address)
-		    VALUES (#{regdate}, #{userid}, #{userpw}, #{name}, #{email}, #{memberClass}, #{address})
-		    ON DUPLICATE KEY UPDATE
-		    userpw = VALUES(userpw),
-		    `name` = VALUES(`name`),
-		    email = VALUES(email),
-		    address = VALUES(address)
-		    """)
+			INSERT INTO `user` (regDate, userid, userpw, `name`, email, class, address)
+			VALUES (#{regdate}, #{userid}, #{userpw}, #{name}, #{email}, #{memberClass}, #{address})
+			ON DUPLICATE KEY UPDATE
+			userpw = VALUES(userpw),
+			`name` = VALUES(`name`),
+			email = VALUES(email),
+			address = VALUES(address)
+			""")
 	void save(Member member);
 
+	@Select("""
+			    SELECT * FROM `user`
+			    WHERE
+			        (#{name} IS NULL OR name LIKE CONCAT('%', #{name}, '%'))
+			        AND (#{email} IS NULL OR email LIKE CONCAT('%', #{email}, '%'))
+			""")
+	List<Member> searcUL(String name, String email);
+	
+	@Update("""
+	        UPDATE `user`
+	        SET userpw = #{newPassword}
+	        WHERE userid = #{userid}
+	    """)	
+	void resetPassword(String userid, String newPassword);
 }

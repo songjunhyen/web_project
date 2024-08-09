@@ -1,16 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.example.demo.vo.Product"%>
-
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <%-- 사용자 이메일 세션 속성 가져오기 --%>
 <%
@@ -110,9 +107,10 @@ body, ul, li {
 	color: black;
 	border-radius: 5px;
 }
+
 </style>
 
-<header>
+<body id="siteHeader">
 	<nav class="top-bar">
 		<ul>
 			<li><a href="/">Home</a></li>
@@ -169,5 +167,5 @@ body, ul, li {
 			<a href="/Home/Main" target="_blank">E-커머스 프로젝트</a>
 		</p>
 	</div>
-</header>
+</body>
 

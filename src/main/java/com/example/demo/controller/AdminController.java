@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -56,7 +58,6 @@ public class AdminController {
 	public String Modif1() {
 		return "admin/Adminmodify";
 	}
-
 
 	@GetMapping("/admin/Search")
 	public String Search() {
@@ -154,4 +155,37 @@ public class AdminController {
 		return map;
 	}
 	
+	@RequestMapping(value = "/admin/Searching", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Admin> searchAdmins(@RequestParam(required = false) String adminclass,
+			@RequestParam(required = false) String name, @RequestParam(required = false) String email) {
+		// 빈값 처리
+		if (adminclass == null || adminclass.isEmpty()) {
+			adminclass = null; // adminclass가 빈 문자열일 경우 null로 처리
+		}
+		if (name == null || name.isEmpty()) {
+			name = null; // name이 빈 문자열일 경우 null로 처리
+		}
+		if (email == null || email.isEmpty()) {
+			email = null; // email이 빈 문자열일 경우 null로 처리
+		}
+
+		// 검색 로직을 구현합니다.
+		List<Admin> admins = adminService.searchAdmin(adminclass, name, email);
+		return admins;
+	}
+	
+	 @PostMapping("/admin/resetAD")
+	    public String resetPassword(@RequestParam String adminid, Model model) {
+	        // 초기화
+		 	LocalDateTime currentTime = LocalDateTime.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+			String formattedDateTime = currentTime.format(formatter);
+			String newId = "admin" + formattedDateTime;
+	        String newPassword = UUID.randomUUID().toString().replace("-", "");
+	        
+	        adminService.resetPassword(adminid, newId, newPassword);
+	        model.addAttribute("message", "비밀번호가 초기화되었습니다.");
+	        return "admin/modify";
+	    }
 }

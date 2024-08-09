@@ -22,8 +22,8 @@ CREATE TABLE product (
 CREATE TABLE `user` ( 
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
-    userid VARCHAR(30) NOT NULL UNIQUE,
-    userpw VARCHAR(60) NOT NULL,
+    userid VARCHAR(60) NOT NULL UNIQUE,
+    userpw VARCHAR(255) ,
     `name` VARCHAR(60) NOT NULL,
     email VARCHAR(60) NOT NULL UNIQUE,
     class INT NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `user` (
 CREATE TABLE review(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     productid INT UNSIGNED NOT NULL,
-    writer VARCHAR(30) NOT NULL, 
+    writer VARCHAR(60) NOT NULL, 
     regDate DATETIME NOT NULL,
     reviewtext TEXT NOT NULL,
     star DOUBLE UNSIGNED NOT NULL
@@ -41,7 +41,7 @@ CREATE TABLE review(
 
 CREATE TABLE cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    userid INT NOT NULL,
+    userid VARCHAR(60) NOT NULL,
     productid INT NOT NULL,
     productname VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL,
@@ -54,8 +54,8 @@ CREATE TABLE cart (
 CREATE TABLE `admin` ( 
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
-    adminid VARCHAR(30) NOT NULL,
-    adminpw VARCHAR(60) NOT NULL UNIQUE,
+    adminid VARCHAR(60) NOT NULL UNIQUE,
+    adminpw VARCHAR(255) NOT NULL UNIQUE,
     `name` VARCHAR(60) NOT NULL,
     email VARCHAR(60) NOT NULL UNIQUE,
     adminclass INT NOT NULL  
@@ -68,26 +68,23 @@ VALUES
     ('user2', '제품 B', 20000, '제품 B의 설명', 30, '카테고리 B', '제조사 Y', 'Blue', 'm', NOW(), 0),
     ('user3', '제품 C', 15000, '제품 C의 설명', 20, '카테고리 A', '제조사 Z', 'White', 's', NOW(), 0);
 
-
-
 -- `review` 테이블에 샘플 데이터 삽입
 INSERT INTO review (productid, writer, regDate, reviewtext, star)
 VALUES 
     (1, 'user1', NOW(), '제품 A 리뷰', 4.5),
-    (2, 'user2', NOW(), '제품 B 리뷰', 3.8),
-    (1, 'user3', NOW(), '제품 A 관련 추가 리뷰', 4.2);
+    (2, 'user2', NOW(), '제품 B 리뷰', 3.5),
+    (1, 'user3', NOW(), '제품 A 관련 추가 리뷰', 4.5);
 
 -- `cart` 테이블에 샘플 데이터 삽입
 INSERT INTO cart (userid, productid, productname, color, size, COUNT, price, priceall)
 VALUES 
-    (1, 1, '제품 A', 'Red', 'l', 2, 10000, 20000),
-    (2, 2, '제품 B', 'Blue', 'm', 1, 20000, 20000),
-    (1, 3, '제품 C', 'White', 's', 3, 15000, 45000);
+    ("12", 1, '제품 A', 'Red', 'l', 2, 10000, 20000),
+    ("12", 2, '제품 B', 'Blue', 'm', 1, 20000, 20000),
+    ("12", 3, '제품 C', 'White', 's', 3, 15000, 45000);
 
--- `admin` 테이블에 샘플 데이터 삽입
-INSERT INTO `admin` (regDate, adminid, adminpw, `name`, email, adminclass)
-VALUES 
-    (NOW(), 'admin', 'adminpw', '관리자', 'admin@example.com', 0),
-    (NOW(), 'admin1', 'adminpw1', '관리자 1', 'admin1@example.com', 1),
-    (NOW(), 'admin2', 'adminpw2', '관리자 2', 'admin2@example.com', 2);
-
+    
+SELECT * FROM `user`;
+SELECT * FROM `admin`;
+SELECT * FROM product;
+SELECT * FROM review;
+SELECT * FROM cart;

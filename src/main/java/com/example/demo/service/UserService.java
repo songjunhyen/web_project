@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -91,5 +93,17 @@ public class UserService {
 		}
 		return usr.getId();
 	}
+
+	public List<Member> searchUser(String name, String email) {		
+		return userDao.searcUL(name, email);
+	}
+
+	public void resetPassword(String userid, String newPassword) {
+		 // 새 비밀번호를 암호화합니다.
+	    String encodedPassword = passwordEncoder.encode(newPassword);
+
+	    // 암호화된 비밀번호를 데이터베이스에 저장합니다.
+	    userDao.resetPassword(userid, encodedPassword);
+    }
 
 }

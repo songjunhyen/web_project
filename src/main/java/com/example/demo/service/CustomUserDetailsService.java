@@ -34,11 +34,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (member != null) {
             return new org.springframework.security.core.userdetails.User(member.getUserid(), member.getUserpw(), new ArrayList<>());
         }
-
+        
         // Google 이메일로 사용자 검색
         Member googleUser = userDao.findByUserEmail(username);
         if (googleUser != null) {
             return new org.springframework.security.core.userdetails.User(googleUser.getUserid(), googleUser.getUserpw(), new ArrayList<>());
+        }
+
+        Admin admin = adminDao.findByUserid(username);
+        if (admin != null) {
+            return new org.springframework.security.core.userdetails.User(admin.getAdminId(), admin.getAdminPw(), new ArrayList<>());
         }
 
         throw new UsernameNotFoundException("User not found");

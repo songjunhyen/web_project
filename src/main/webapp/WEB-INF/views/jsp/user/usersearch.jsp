@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>유저 비밀번호 초기화</title>
+    <title>유저 검색</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="_csrf" content="${_csrf.token}">
     <meta name="_csrf_header" content="${_csrf.headerName}">
@@ -19,13 +19,6 @@
                 event.preventDefault(); // 폼 제출 방지
                 performSearch();
             });
-
-            // 비밀번호 초기화 버튼 클릭 이벤트
-            $(document).on('click', '.reset-password', function(event) {
-                event.preventDefault();
-                var userid = $(this).data('userid');
-                resetPassword(userid);
-            });
         });
 
         function performSearch() {
@@ -33,7 +26,7 @@
             var email = $("#email").val().trim();
             
             $.ajax({
-                url: '../user/Searching', // 서버에서 결과를 반환하는 URL
+                url: 'Searching', // 서버에서 결과를 반환하는 URL
                 type: 'POST',
                 data: {
                     name: name,
@@ -51,10 +44,9 @@
                     resultDiv.empty(); // 이전 결과 삭제
                     if (data.length > 0) {
                         var table = '<table border="1" cellpadding="5" cellspacing="0" style="width:100%">';
-                        table += '<thead><tr><th>이름</th><th>이메일</th><th>가입일</th><th>주소</th><th>비밀번호 초기화</th></tr></thead><tbody>';
+                        table += '<thead><tr><th>이름</th><th>이메일</th><th>가입일</th><th>주소</th></tr></thead><tbody>';
                         $.each(data, function(index, user) {
-                            table += '<tr><td>' + user.name + '</td><td>' + user.email + '</td><td>' + user.regdate + '</td><td>' + user.address + '</td>';
-                            table += '<td><button class="reset-password" data-userid="' + user.userid + '">초기화</button></td></tr>';
+                            table += '<tr><td>' + user.name + '</td><td>' + user.email + '</td><td>' + user.regdate + '</td><td>' + user.address + '</td></tr>';
                         });
                         table += '</tbody></table>';
                         resultDiv.html(table);
@@ -65,29 +57,6 @@
                 error: function(e) {
                     console.error("검색 중 오류가 발생했습니다:", e);
                     $('#searchResults').html('<p>검색 중 오류가 발생했습니다.</p>');
-                }
-            });
-        }
-        function resetPassword(userid) {
-            $.ajax({
-                url: '../user/resetPassword', // 비밀번호 초기화 요청을 처리하는 URL
-                type: 'POST',
-                data: {
-                    userid: userid
-                },
-                beforeSend: function(xhr) {
-                    // CSRF 토큰을 헤더에 추가
-                    if (csrfToken && csrfHeader) {
-                        xhr.setRequestHeader(csrfHeader, csrfToken);
-                    }
-                },
-                success: function(response) {
-                    alert('비밀번호가 초기화되었습니다.');
-                    performSearch(); // 비밀번호 초기화 후 검색 결과를 갱신
-                },
-                error: function(e) {
-                    console.error("비밀번호 초기화 중 오류가 발생했습니다:", e);
-                    alert('비밀번호 초기화 중 오류가 발생했습니다.');
                 }
             });
         }

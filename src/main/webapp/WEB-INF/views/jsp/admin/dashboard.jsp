@@ -105,30 +105,29 @@ th {
 	<div id="adminpower">
 		<h2>관리자 권한 및 작업</h2>
 		<ul>
-			<c:when test="${admin.adminclass == 5}">
-		
-			</c:when>
-			<c:when test="${admin.adminclass == 4}">
-
-			</c:when>
-			<c:when test="${admin.adminclass == 3}">
-		
-			</c:when>
-			<c:when test="${admin.adminclass == 2}">
-
-			</c:when>
-			<c:when test="${admin.adminclass == 1}">
-				<li><a href="/admin/Signup" class="button">Add</a></li>
-			<br>
-				<li><a href="/admin/Modify" class="button">Modify</a></li>
-			</c:when>
-			<c:when test="${admin.adminclass != 1}">
-				<li><a href="/admin/Modify1" class="button">Modify</a></li>
-			</c:when>
-			
-			<li><a href="/admin/Signout" class="button">Delete</a> (3)</li>
+			<c:choose>
+				<c:when test="${admin.adminclass == 5}">
+					<!-- 권한 5에 대한 내용 추가 -->
+				</c:when>
+				<c:when test="${admin.adminclass == 4}">
+					<!-- 권한 4에 대한 내용 추가 -->
+				</c:when>
+				<c:when test="${admin.adminclass == 3}">
+					<!-- 권한 3에 대한 내용 추가 -->
+				</c:when>
+				<c:when test="${admin.adminclass == 2}">
+					<!-- 권한 2에 대한 내용 추가 -->
+				</c:when>
+				<c:when test="${admin.adminclass == 1}">
+					<li><a href="/admin/Signup" class="button">Add</a></li>
+					<br>
+					<li><a href="/admin/Modify" class="button">UserModify</a></li>
+					<br>
+					<li><a href="/admin/Modify1" class="button">AdminModify</a></li>
+				</c:when>
+			</c:choose>
+			<li><a href="/admin/Signout" class="button">Delete</a> (!)</li>
 		</ul>
-		
 	</div>
 
 	<br>
