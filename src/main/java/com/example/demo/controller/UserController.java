@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.form.SignUpForm;
 import com.example.demo.service.UserService;
 import com.example.demo.util.SecurityUtils;
-import com.example.demo.vo.Admin;
 import com.example.demo.vo.Member;
 
 import jakarta.servlet.http.HttpSession;
@@ -167,6 +166,7 @@ public class UserController {
 	        userService.resetPassword(userid, newPassword);
 	        model.addAttribute("message", "비밀번호가 초기화되었습니다.");
 	        return "user/usersearch";
-	    }
-	 
+	    }	
 }
+
+

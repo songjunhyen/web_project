@@ -88,8 +88,9 @@
 <body>
 	<h1>Login</h1>
     <a href="/oauth2/authorization/google">Login with Google</a>
+<br>
+    <a href="/oauth2/authorization/kakao">Login with kakao</a>
 </body>
-
 	<%@ include file="includes/foot1.jsp"%>
 </body>
 

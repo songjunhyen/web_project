@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.service.AllService;
 import com.example.demo.service.GoogleAuthService;
+import com.example.demo.service.KakaoAuthService;
 import com.example.demo.vo.Member;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.json.gson.GsonFactory;
@@ -25,47 +26,75 @@ import jakarta.servlet.http.HttpSession;
 @CrossOrigin(origins = "*")
 public class LoginController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Value("${spring.oauth2.client.registration.google.client-id}")
-    private String googleClientId;
+	@Value("${spring.oauth2.client.registration.google.client-id}")
+	private String googleClientId;
 
-    @Autowired
-    private HttpSession httpSession;
-    
-    @Autowired
-    private GoogleAuthService googleAuthService;
+	@Value("${spring.oauth2.client.registration.kakao.client-id}")
+	private String kakaoClientId;
+	
+	@Autowired
+	private HttpSession httpSession;
 
-    @Autowired
-    private AllService allService;
+	@Autowired
+	private GoogleAuthService googleAuthService;
 
-    private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+	@Autowired
+	private KakaoAuthService kakaoAuthService; // KakaoAuthService를 추가합니다
+	
+	@Autowired
+	private AllService allService;
 
-    @PostMapping("/google")
-    public ResponseEntity<?> handleGoogleLogin(@RequestBody Map<String, String> request) {
-        String idTokenString = request.get("idToken");
+	private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
-        try {
-            GoogleIdToken.Payload payload = googleAuthService.verifyToken(idTokenString);
-            String userEmail = payload.getEmail();
-            String name = (String) payload.get("name");
+	@PostMapping("/google")
+	public ResponseEntity<?> handleGoogleLogin(@RequestBody Map<String, String> request) {
+		String idTokenString = request.get("idToken");
 
-            // 사용자 인증 및 세션 처리
-            Member user = allService.saveOrUpdateUser(userEmail, name);
-            httpSession.setAttribute("user", user);
-            httpSession.setAttribute("userRole2", "user");
+		try {
+			GoogleIdToken.Payload payload = googleAuthService.verifyToken(idTokenString);
+			String userEmail = payload.getEmail();
+			String name = (String) payload.get("name");
 
-            return ResponseEntity.ok(Map.of("redirectUrl", "/Home/Main"));
-        } catch (Exception e) {
-            logger.error("Error during Google token verification", e);
-            return ResponseEntity.status(500).body(Map.of("error", "Server error during token verification"));
-        }
-    }
+			// 사용자 인증 및 세션 처리
+			Member user = allService.saveOrUpdateUser(userEmail, name);
+			httpSession.setAttribute("user", user);
+			httpSession.setAttribute("userRole2", "user");
 
+			return ResponseEntity.ok(Map.of("redirectUrl", "/Home/Main"));
+		} catch (Exception e) {
+			logger.error("Error during Google token verification", e);
+			return ResponseEntity.status(500).body(Map.of("error", "Server error during token verification"));
+		}
+	}
 
-    @GetMapping("/google/login")
-    public String googleLogin() {
-        return "AllLogin"; // 구글 로그인 페이지를 반환
-    }
+	@PostMapping("/kakao")
+	public ResponseEntity<?> handleKakaoLogin(@RequestBody Map<String, String> request) {
+		String accessToken = request.get("accessToken"); // Kakao는 accessToken을 사용합니다
+
+		try {
+			Map<String, Object> userInfo = kakaoAuthService.verifyToken(accessToken);
+			String userEmail = (String) userInfo.get("email");
+			String name = (String) userInfo.get("name");
+
+			// 사용자 인증 및 세션 처리
+			Member user = allService.saveOrUpdateUser(userEmail, name);
+			httpSession.setAttribute("user", user);
+			httpSession.setAttribute("userRole2", "user");
+
+			return ResponseEntity.ok(Map.of("redirectUrl", "/Home/Main"));
+		} catch (Exception e) {
+			logger.error("Error during Kakao token verification", e);
+			return ResponseEntity.status(500).body(Map.of("error", "Server error during token verification"));
+		}
+	}
+
+	@GetMapping("/google/login")
+	public String googleLogin() {
+		return "AllLogin"; // 구글 로그인 페이지를 반환
+	}
 }
 
+
+	
