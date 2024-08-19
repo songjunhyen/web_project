@@ -63,18 +63,17 @@ CREATE TABLE `admin` (
 
 CREATE TABLE PurchaseRecords (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    order_number VARCHAR(20) NOT NULL UNIQUE,  -- 주문번호를 추가하고 유니크 제약 조건을 추가
+    order_number VARCHAR(255) NOT NULL UNIQUE,  -- 주문번호를 추가하고 유니크 제약 조건을 추가
     product_id INT UNSIGNED NOT NULL,
     quantity INT UNSIGNED NOT NULL,  -- 수량이 음수가 될 수 없으므로 UNSIGNED 사용
     optionin VARCHAR(255),  -- 텍스트보다 길이를 제한한 VARCHAR를 사용하는 것이 좋습니다
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    STATUS VARCHAR(50) DEFAULT '배송 전',  -- 주문 상태를 저장하는 컬럼 추가
-    FOREIGN KEY (product_id) REFERENCES Product(id) -- Products 테이블의 외래 키
+    STATUS VARCHAR(50) DEFAULT '배송 전'  -- 주문 상태를 저장하는 컬럼 추가
 );
 
 CREATE TABLE GuestPurchaseRecords (
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    order_number VARCHAR(20) NOT NULL UNIQUE,  -- 주문번호를 추가하고 유니크 제약 조건을 추가
+    order_number VARCHAR(255) NOT NULL UNIQUE,  -- 주문번호를 추가하고 유니크 제약 조건을 추가
     product_id INT UNSIGNED NOT NULL,
     quantity INT UNSIGNED NOT NULL,  -- 수량이 음수가 될 수 없으므로 UNSIGNED 사용
     optionin VARCHAR(255),  -- 텍스트보다 길이를 제한한 VARCHAR를 사용하는 것이 좋습니다
@@ -83,8 +82,17 @@ CREATE TABLE GuestPurchaseRecords (
     guest_name VARCHAR(100) NOT NULL,
     guest_email VARCHAR(100) NOT NULL,
     guest_phone VARCHAR(20) NOT NULL,
-    guest_address TEXT NOT NULL,  -- 주소는 긴 문자열일 수 있으므로 TEXT 타입 사용
-    FOREIGN KEY (product_id) REFERENCES Product(id) -- Products 테이블의 외래 키
+    guest_address TEXT NOT NULL  -- 주소는 긴 문자열일 수 있으므로 TEXT 타입 사용
+);
+
+CREATE TABLE PaymentRecords (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    order_number VARCHAR(255) NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    price DECIMAL(10, 2) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL DEFAULT 'UNKNOWN', -- 기본값을 'UNKNOWN'으로 설정
+    payment_status VARCHAR(20) DEFAULT 'PENDING', -- 기본값을 'PENDING'으로 설정
+    UNIQUE (order_number)
 );
 
 -- `product` 테이블에 샘플 데이터 삽입
@@ -102,11 +110,11 @@ VALUES
     (1, 'user3', NOW(), '제품 A 관련 추가 리뷰', 4.5);
 
 -- `cart` 테이블에 샘플 데이터 삽입
-INSERT INTO cart (userid, productid, productname, color, size, COUNT, price, priceall)
+INSERT INTO cart (userid, productid, productname, color, size, COUNT, price)
 VALUES 
-    ("12", 1, '제품 A', 'Red', 'l', 2, 10000, 20000),
-    ("12", 2, '제품 B', 'Blue', 'm', 1, 20000, 20000),
-    ("12", 3, '제품 C', 'White', 's', 3, 15000, 45000);
+    ("12", 1, '제품 A', 'Red', 'l', 2, 10000),
+    ("12", 2, '제품 B', 'Blue', 'm', 1, 20000),
+    ("12", 3, '제품 C', 'White', 's', 3, 15000);
 
     
 SELECT * FROM `user`;
@@ -116,3 +124,4 @@ SELECT * FROM review;
 SELECT * FROM cart;
 SELECT * FROM PurchaseRecords
 SELECT * FROM GuestPurchaseRecords
+

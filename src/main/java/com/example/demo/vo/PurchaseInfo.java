@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class PurchaseInfo {
-	private String orderNumber;
+    private String orderNumber;
     private String userid;
     private String cartids;  // 카트 ID (회원 구매용)
     private int productid;
@@ -15,5 +15,6 @@ public class PurchaseInfo {
     private int price;
     private LocalDateTime requestDate;
     private int quantity; // 추가된 필드
+    private String phone; // 추가된 필드
+    private String address; // 추가된 필드
 }
-

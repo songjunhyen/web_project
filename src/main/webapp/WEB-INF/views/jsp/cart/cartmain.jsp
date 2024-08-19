@@ -59,7 +59,7 @@ if (cartList != null && !cartList.isEmpty()) {
         if (carts != null) {
             for (Cart cart : carts) {
                 cartIdsString.append(cart.getId()).append(",");
-                sizeColorsString.append(cart.getSize()).append(cart.getColor()).append(";");
+                sizeColorsString.append(cart.getSize()).append("_").append(cart.getColor()).append("_").append(cart.getCount()).append(";");;	
             }
         }
         %>
@@ -124,7 +124,7 @@ if (cartList != null && !cartList.isEmpty()) {
                 userid: userid,
                 cartIds: JSON.stringify(cartIds), // 카트 ID 목록
                 sizeColors: JSON.stringify(sizeColors), // 사이즈와 컬러 목록
-                totalPrice: totalPrice
+                priceall: totalPrice
             },
             beforeSend: function(xhr) {
                 // CSRF 토큰을 헤더에 추가
@@ -134,7 +134,9 @@ if (cartList != null && !cartList.isEmpty()) {
             },
             success: function(data) {
                 console.log("구매하기 페이지로 이동");
+
                 // 구매 후 페이지 이동 또는 상태 갱신
+                window.location.href = '/confirmation';
             },
             error: function(e) {
                 console.error("이용 중 오류가 발생했습니다:", e);
@@ -200,8 +202,6 @@ button:hover {
 </head>
 <body>
     <%@ include file="../includes/head1.jsp"%>
-
-
 
 	<div class="container">
 		<!-- 장바구니 목록을 포함할 영역 -->
