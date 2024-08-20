@@ -42,6 +42,7 @@ if (cartList != null && !cartList.isEmpty()) {
     // 콘솔에 userId 출력
     console.log("User ID:", userid);
 
+    
     $(document).ready(function() {
         csrfToken = $('meta[name="_csrf"]').attr('content');
         csrfHeader = $('meta[name="_csrf_header"]').attr('content');
@@ -65,6 +66,9 @@ if (cartList != null && !cartList.isEmpty()) {
         %>
         cartIds = "<%= cartIdsString.toString() %>".split(",").filter(function(id) { return id !== ""; });
         sizeColors = "<%= sizeColorsString.toString() %>".split(";").filter(function(color) { return color !== ""; });
+        
+        console.log("cartIds:", cartIds);
+        console.log("sizeColors:", sizeColors);
     });
 
     // 장바구니 목록 초기화 함수

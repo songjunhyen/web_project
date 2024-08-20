@@ -85,4 +85,32 @@ public class PurchaseService {
 		}
 
 	}
+
+	public String getproductname(String productid) {
+	    try {
+	        // 문자열을 정수로 변환
+	        int id = Integer.parseInt(productid);
+	        // 변환된 정수를 DAO 메서드에 전달
+	        return purchaseDao.getproductname(id);
+	    } catch (NumberFormatException e) {
+	        // 변환 오류 발생 시 로깅 또는 예외 처리
+	        return null; // 또는 적절한 예외 처리
+	    }
+	}
+
+	public String getproductnamebyC(String firstCartId) {
+	    try {
+	        // 문자열을 정수로 변환
+	        int id = Integer.parseInt(firstCartId);
+	        // 변환된 정수를 DAO 메서드에 전달
+	        return purchaseDao.getproductnamebyC(id);
+	    } catch (NumberFormatException e) {
+	        // 변환 오류 발생 시 로깅 또는 예외 처리
+	        return null; // 또는 적절한 예외 처리
+	    }
+	}
+
+	public String getemail(String userId) {
+		return purchaseDao.getemail(userId);
+	}
 }

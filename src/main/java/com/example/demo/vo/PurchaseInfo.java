@@ -17,4 +17,5 @@ public class PurchaseInfo {
     private int quantity; // 추가된 필드
     private String phone; // 추가된 필드
     private String address; // 추가된 필드
+    private String email;
 }

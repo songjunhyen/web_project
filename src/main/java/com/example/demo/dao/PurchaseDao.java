@@ -77,4 +77,19 @@ public interface PurchaseDao {
 			""")
 	void insertStatus(PaymentInfo paymentInfo);
 
+	@Select("""
+			SELECT name FROM product WHERE id = #{productid}
+			""")
+	String getproductname(int productid);
+
+	@Select("""
+			SELECT productname FROM cart WHERE id = #{firstCartId}
+			""")
+	String getproductnamebyC(int firstCartId);
+
+	@Select("""
+			SELECT email FROM user WHERE userid = #{userId}
+			""")
+	String getemail(String userId);
+
 }
